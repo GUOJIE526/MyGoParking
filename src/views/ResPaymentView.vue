@@ -68,10 +68,14 @@ function saveResPaymentInfo(amount, lotName, carId, startTime) {
 }
 //------------------------------------------------
 
-
 // 建立交易請求
 async function requestPayment() {
-  saveResPaymentInfo(MyAmount.value, lotInfo.lotName, MycarId.value, startTime.value);
+  saveResPaymentInfo(
+    MyAmount.value,
+    lotInfo.lotName,
+    MycarId.value,
+    startTime.value
+  );
   const payment = {
     amount: MyAmount.value, // 總金額
     currency: "TWD", // 貨幣類型
@@ -127,7 +131,12 @@ const ecpayForm = ref(null); // 將表單引用存儲在 ecpayForm 中
 const paymentParameters = ref({}); // 初始化空的支付參數物件
 async function fetchPaymentData() {
   console.log("MylotId:", MylotId.value);
-  saveResPaymentInfo(MyAmount.value, lotInfo.lotName, MycarId.value, startTime.value);
+  saveResPaymentInfo(
+    MyAmount.value,
+    lotInfo.lotName,
+    MycarId.value,
+    startTime.value
+  );
   try {
     const paymentData = {
       ItemName: "預約停車場",
@@ -142,7 +151,7 @@ async function fetchPaymentData() {
     console.log("paymentData:", paymentData); // 檢查 paymentData 結構
 
     const response = await axios.post(
-      "https://localhost:7077/api/ECPay/ResECPayForm",
+      "https://goparkapi.azurewebsites.net/api/ECPay/ResECPayForm",
       paymentData,
       {
         headers: { "Content-Type": "application/json" },
@@ -161,7 +170,6 @@ async function fetchPaymentData() {
     alert("交易失敗，請稍後再試。");
   }
 }
-
 
 function submitForm() {
   if (ecpayForm.value) {
@@ -207,10 +215,13 @@ const handlePayment = () => {
 
 <template>
   <main id="main">
-    <BreadcrumbsComponent backgroundImage="/03.jpg" :breadcrumbs="[
-      { name: 'Home', link: '/' },
-      { name: 'GoParkingMap', link: '/search' },
-    ]">
+    <BreadcrumbsComponent
+      backgroundImage="/03.jpg"
+      :breadcrumbs="[
+        { name: 'Home', link: '/' },
+        { name: 'GoParkingMap', link: '/search' },
+      ]"
+    >
       <template #title>
         <!-- 插入到 title 插槽 -->
         <h2>Reservation & MonthlyRental</h2>
@@ -230,8 +241,12 @@ const handlePayment = () => {
           <div class="text-left p-4 bg-white rounded shadow">
             <div class="row">
               <div class="col-md-5 p-3 img-container">
-                <img :src="mapUrl" alt="Map of {{ lotInfo.lotName }}" class="rounded img-fluid"
-                  style="width: 100%; height: 100%" />
+                <img
+                  :src="mapUrl"
+                  alt="Map of {{ lotInfo.lotName }}"
+                  class="rounded img-fluid"
+                  style="width: 100%; height: 100%"
+                />
               </div>
               <div class="col-md-7 p-3 mt-2">
                 <h1>{{ lotInfo.lotName }}</h1>
@@ -245,8 +260,17 @@ const handlePayment = () => {
               <div class="text-center">
                 <h2 class="mt-5">選擇支付方式</h2>
                 <ul class="nav justify-content-evenly mb-4 mt-5">
-                  <li class="nav-item" style="width: 40%" v-for="(payment, key) in PayData" :key="key">
-                    <div class="plan-option" :class="{ active: selectedPayKey === key }" @click="selectPayment(key)">
+                  <li
+                    class="nav-item"
+                    style="width: 40%"
+                    v-for="(payment, key) in PayData"
+                    :key="key"
+                  >
+                    <div
+                      class="plan-option"
+                      :class="{ active: selectedPayKey === key }"
+                      @click="selectPayment(key)"
+                    >
                       {{ payment.label }}
                     </div>
                   </li>
@@ -259,51 +283,110 @@ const handlePayment = () => {
 
       <!-- 綠界表單開始 -->
       <div class="text-center mt-4">
-        <form ref="ecpayForm" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="post"
-          v-show="false">
+        <form
+          ref="ecpayForm"
+          action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5"
+          method="post"
+          v-show="false"
+        >
           <div>
             <label>MerchantID:</label>
-            <input type="text" name="MerchantID" :value="paymentParameters.MerchantID" readonly />
+            <input
+              type="text"
+              name="MerchantID"
+              :value="paymentParameters.MerchantID"
+              readonly
+            />
           </div>
           <div>
             <label>MerchantTradeNo:</label>
-            <input type="text" name="MerchantTradeNo" :value="paymentParameters.MerchantTradeNo" readonly />
+            <input
+              type="text"
+              name="MerchantTradeNo"
+              :value="paymentParameters.MerchantTradeNo"
+              readonly
+            />
           </div>
           <div>
             <label>MerchantTradeDate:</label>
-            <input type="text" name="MerchantTradeDate" :value="paymentParameters.MerchantTradeDate" readonly />
+            <input
+              type="text"
+              name="MerchantTradeDate"
+              :value="paymentParameters.MerchantTradeDate"
+              readonly
+            />
           </div>
           <div>
             <label>TotalAmount:</label>
-            <input type="text" name="TotalAmount" :value="paymentParameters.TotalAmount" readonly />
+            <input
+              type="text"
+              name="TotalAmount"
+              :value="paymentParameters.TotalAmount"
+              readonly
+            />
           </div>
           <div>
             <label>TradeDesc:</label>
-            <input type="text" name="TradeDesc" :value="paymentParameters.TradeDesc" readonly />
+            <input
+              type="text"
+              name="TradeDesc"
+              :value="paymentParameters.TradeDesc"
+              readonly
+            />
           </div>
           <div>
             <label>ItemName:</label>
-            <input type="text" name="ItemName" :value="paymentParameters.ItemName" readonly />
+            <input
+              type="text"
+              name="ItemName"
+              :value="paymentParameters.ItemName"
+              readonly
+            />
           </div>
           <div>
             <label>ReturnURL:</label>
-            <input type="text" name="ReturnURL" :value="paymentParameters.ReturnURL" readonly />
+            <input
+              type="text"
+              name="ReturnURL"
+              :value="paymentParameters.ReturnURL"
+              readonly
+            />
           </div>
           <div>
             <label>ClientBackURL:</label>
-            <input type="text" name="ClientBackURL" :value="paymentParameters.ClientBackURL" readonly />
+            <input
+              type="text"
+              name="ClientBackURL"
+              :value="paymentParameters.ClientBackURL"
+              readonly
+            />
           </div>
           <div>
             <label>ChoosePayment:</label>
-            <input type="text" name="ChoosePayment" :value="paymentParameters.ChoosePayment" readonly />
+            <input
+              type="text"
+              name="ChoosePayment"
+              :value="paymentParameters.ChoosePayment"
+              readonly
+            />
           </div>
           <div>
             <label>CheckMacValue:</label>
-            <input type="text" name="CheckMacValue" :value="paymentParameters.CheckMacValue" readonly />
+            <input
+              type="text"
+              name="CheckMacValue"
+              :value="paymentParameters.CheckMacValue"
+              readonly
+            />
           </div>
           <div>
             <label>PaymentType:</label>
-            <input type="text" name="PaymentType" :value="paymentParameters.PaymentType" readonly />
+            <input
+              type="text"
+              name="PaymentType"
+              :value="paymentParameters.PaymentType"
+              readonly
+            />
           </div>
         </form>
       </div>
