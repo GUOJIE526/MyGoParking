@@ -5,9 +5,7 @@ import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
 <template>
   <main id="main">
     <!-- 麵包屑 -->
-    <BreadcrumbsComponent
-      backgroundImage="/src/assets/images/parkingLot_top2.png"
-    >
+    <BreadcrumbsComponent backgroundImage="/parkingLot_top2.png">
       <template #title>
         <!-- 插入到 title 插槽 -->
         <h2>Support</h2>

@@ -6,9 +6,7 @@ import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
   <!-- 這頁主要放用戶中心細分的導覽列，然後動態載入子路由 -->
   <main id="main">
     <!-- 麵包屑 -->
-    <BreadcrumbsComponent
-      backgroundImage="/src/assets/images/parkingLot_top.png"
-    >
+    <BreadcrumbsComponent backgroundImage="/parkingLot_top.png">
       <template #title>
         <!-- 插入到 title 插槽 -->
         <h2>User Center</h2>
