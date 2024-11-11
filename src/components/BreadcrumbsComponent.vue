@@ -2,7 +2,7 @@
 const props = defineProps({
   backgroundImage: {
     type: String,
-    default: "src/assets/images/breadcrumbs-bg.jpg",
+    default: "/breadcrumbs-bg.jpg",
   },
   breadcrumbs: {
     type: Array,
