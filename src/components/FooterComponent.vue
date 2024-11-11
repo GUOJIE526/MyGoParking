@@ -218,222 +218,216 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <!-- 可以互動的選單, 如果不喜歡可以不要 -->
-    <nav class="menu" v-if="userStore.isLogin">
-      <input
-        type="checkbox"
-        href="#"
-        class="menu-open"
-        name="menu-open"
-        id="menu-open"
-      />
-      <label class="menu-open-button" for="menu-open">
-        <span class="hamburger hamburger-1"></span>
-        <span class="hamburger hamburger-2"></span>
-        <span class="hamburger hamburger-3"></span>
-      </label>
-      <!-- <a title="搜尋停車場"  class="menu-item"> <i class="fa-solid fa-location-dot"></i> </a> -->
-      <RouterLink
-        :to="{ name: 'search' }"
-        activeClass="active"
-        title="搜尋停車場"
-        class="menu-item"
-      >
-        <i class="fa-solid fa-location-dot"></i>
-      </RouterLink>
-      <RouterLink
-        :to="{ name: 'customer' }"
-        title="使用者中心"
-        class="menu-item"
-      >
-        <i class="fa-solid fa-user"></i>
-      </RouterLink>
-      <RouterLink :to="{ name: 'ChargeView' }" title="繳費" class="menu-item">
-        <i class="fa-solid fa-dollar-sign"></i>
-      </RouterLink>
-      <a title="意見回覆" href="#" @click.prevent="reply" class="menu-item">
-        <i class="fa fa-envelope"></i>
-      </a>
-    </nav>
-    <!-- filters -->
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-      <defs>
-        <filter id="shadowed-goo">
-          <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
-          <feColorMatrix
-            in="blur"
-            mode="matrix"
-            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-            result="goo"
-          />
-          <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
-          <feColorMatrix
-            in="shadow"
-            mode="matrix"
-            values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2"
-            result="shadow"
-          />
-          <feOffset in="shadow" dx="1" dy="1" result="shadow" />
-          <feComposite in2="shadow" in="goo" result="goo" />
-          <feComposite in2="goo" in="SourceGraphic" result="mix" />
-        </filter>
-        <filter id="goo">
-          <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
-          <feColorMatrix
-            in="blur"
-            mode="matrix"
-            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-            result="goo"
-          />
-          <feComposite in2="goo" in="SourceGraphic" result="mix" />
-        </filter>
-      </defs>
-    </svg>
-    <!-- scroll-top button 頁面往上的button-->
-    <a
-      :style="{
-        opacity: userStore.isLogin ? 0 : 1,
-        pointerEvents: userStore.isLogin ? 'none' : 'auto',
-      }"
+  <!-- 可以互動的選單, 如果不喜歡可以不要 -->
+  <nav class="menu" v-if="userStore.isLogin">
+    <input
+      type="checkbox"
       href="#"
-      class="scroll-top d-flex align-items-center justify-content-center"
-      ><i class="bi bi-arrow-up-short"></i
-    ></a>
+      class="menu-open"
+      name="menu-open"
+      id="menu-open"
+    />
+    <label class="menu-open-button" for="menu-open">
+      <span class="hamburger hamburger-1"></span>
+      <span class="hamburger hamburger-2"></span>
+      <span class="hamburger hamburger-3"></span>
+    </label>
+    <!-- <a title="搜尋停車場"  class="menu-item"> <i class="fa-solid fa-location-dot"></i> </a> -->
+    <RouterLink
+      :to="{ name: 'search' }"
+      activeClass="active"
+      title="搜尋停車場"
+      class="menu-item"
+    >
+      <i class="fa-solid fa-location-dot"></i>
+    </RouterLink>
+    <RouterLink :to="{ name: 'customer' }" title="使用者中心" class="menu-item">
+      <i class="fa-solid fa-user"></i>
+    </RouterLink>
+    <RouterLink :to="{ name: 'ChargeView' }" title="繳費" class="menu-item">
+      <i class="fa-solid fa-dollar-sign"></i>
+    </RouterLink>
+    <a title="意見回覆" href="#" @click.prevent="reply" class="menu-item">
+      <i class="fa fa-envelope"></i>
+    </a>
+  </nav>
+  <!-- filters -->
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <defs>
+      <filter id="shadowed-goo">
+        <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+        <feColorMatrix
+          in="blur"
+          mode="matrix"
+          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+          result="goo"
+        />
+        <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
+        <feColorMatrix
+          in="shadow"
+          mode="matrix"
+          values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2"
+          result="shadow"
+        />
+        <feOffset in="shadow" dx="1" dy="1" result="shadow" />
+        <feComposite in2="shadow" in="goo" result="goo" />
+        <feComposite in2="goo" in="SourceGraphic" result="mix" />
+      </filter>
+      <filter id="goo">
+        <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+        <feColorMatrix
+          in="blur"
+          mode="matrix"
+          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+          result="goo"
+        />
+        <feComposite in2="goo" in="SourceGraphic" result="mix" />
+      </filter>
+    </defs>
+  </svg>
+  <!-- scroll-top button 頁面往上的button-->
+  <a
+    :style="{
+      opacity: userStore.isLogin ? 0 : 1,
+      pointerEvents: userStore.isLogin ? 'none' : 'auto',
+    }"
+    href="#"
+    class="scroll-top d-flex align-items-center justify-content-center"
+    ><i class="bi bi-arrow-up-short"></i
+  ></a>
 
-    <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer">
-      <div class="footer-content position-relative">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-1"></div>
-            <div class="col-lg-2">
-              <img src="/logo.png" alt="" style="width: 150px" />
-            </div>
-            <div class="col-lg-3 col-md-12">
-              <div class="footer-info">
-                <h3>MyGO Parking</h3>
-                <p>
-                  801高雄市前金區中正四路211號8號樓之1<br /><br />
-                  <strong>Phone:</strong> 07 969 9885<br />
-                  <strong>Email:</strong> example@example.com<br />
-                </p>
-                <div class="social-links d-flex mt-3">
-                  <a
-                    href="#"
-                    class="d-flex align-items-center justify-content-center"
-                    ><i class="bi bi-twitter"></i
-                  ></a>
-                  <a
-                    href="#"
-                    class="d-flex align-items-center justify-content-center"
-                    ><i class="bi bi-facebook"></i
-                  ></a>
-                  <a
-                    href="#"
-                    class="d-flex align-items-center justify-content-center"
-                    ><i class="bi bi-instagram"></i
-                  ></a>
-                  <a
-                    href="#"
-                    class="d-flex align-items-center justify-content-center"
-                    ><i class="bi bi-linkedin"></i
-                  ></a>
-                </div>
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="footer-content position-relative">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-2">
+            <img src="/logo.png" alt="" style="width: 150px" />
+          </div>
+          <div class="col-lg-3 col-md-12">
+            <div class="footer-info">
+              <h3>MyGO Parking</h3>
+              <p>
+                801高雄市前金區中正四路211號8號樓之1<br /><br />
+                <strong>Phone:</strong> 07 969 9885<br />
+                <strong>Email:</strong> example@example.com<br />
+              </p>
+              <div class="social-links d-flex mt-3">
+                <a
+                  href="#"
+                  class="d-flex align-items-center justify-content-center"
+                  ><i class="bi bi-twitter"></i
+                ></a>
+                <a
+                  href="#"
+                  class="d-flex align-items-center justify-content-center"
+                  ><i class="bi bi-facebook"></i
+                ></a>
+                <a
+                  href="#"
+                  class="d-flex align-items-center justify-content-center"
+                  ><i class="bi bi-instagram"></i
+                ></a>
+                <a
+                  href="#"
+                  class="d-flex align-items-center justify-content-center"
+                  ><i class="bi bi-linkedin"></i
+                ></a>
               </div>
             </div>
-            <!-- End footer info column-->
-
-            <div class="col-lg-2 col-md-4 footer-links">
-              <h4>服務項目</h4>
-              <ul>
-                <li>
-                  <a
-                    href="#"
-                    @click.prevent="redirected('/search')"
-                    title="停車場搜尋"
-                    >停車場搜尋</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    @click.prevent="redirected('reservation')"
-                    title="預定車位"
-                    >預定車位</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    @click.prevent="redirected('monthly')"
-                    title="月租車位"
-                    >月租車位</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <!-- End footer links column-->
-
-            <div class="col-lg-2 col-md-4 footer-links">
-              <h4>其他功能</h4>
-              <ul>
-                <li>
-                  <a
-                    href="#"
-                    @click.prevent="redirected('/CustomerCenter')"
-                    title="用戶中心"
-                    >用戶中心</a
-                  >
-                </li>
-                <li>
-                  <a href="#" @click.prevent="guide()" title="使用教學"
-                    >使用教學</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <!-- End footer links column-->
-
-            <div class="col-lg-2 col-md-4 footer-links">
-              <h4>聯絡我們</h4>
-              <ul>
-                <li><a href="#" @click.prevent="reply">意見回復</a></li>
-                <li><a href="#">客服功能</a></li>
-              </ul>
-            </div>
-            <!-- End footer links column-->
           </div>
+          <!-- End footer info column-->
+
+          <div class="col-lg-2 col-md-4 footer-links">
+            <h4>服務項目</h4>
+            <ul>
+              <li>
+                <a
+                  href="#"
+                  @click.prevent="redirected('/search')"
+                  title="停車場搜尋"
+                  >停車場搜尋</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  @click.prevent="redirected('reservation')"
+                  title="預定車位"
+                  >預定車位</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  @click.prevent="redirected('monthly')"
+                  title="月租車位"
+                  >月租車位</a
+                >
+              </li>
+            </ul>
+          </div>
+          <!-- End footer links column-->
+
+          <div class="col-lg-2 col-md-4 footer-links">
+            <h4>其他功能</h4>
+            <ul>
+              <li>
+                <a
+                  href="#"
+                  @click.prevent="redirected('/CustomerCenter')"
+                  title="用戶中心"
+                  >用戶中心</a
+                >
+              </li>
+              <li>
+                <a href="#" @click.prevent="guide()" title="使用教學"
+                  >使用教學</a
+                >
+              </li>
+            </ul>
+          </div>
+          <!-- End footer links column-->
+
+          <div class="col-lg-2 col-md-4 footer-links">
+            <h4>聯絡我們</h4>
+            <ul>
+              <li><a href="#" @click.prevent="reply">意見回復</a></li>
+              <li><a href="#">客服功能</a></li>
+            </ul>
+          </div>
+          <!-- End footer links column-->
         </div>
       </div>
+    </div>
 
-      <div class="footer-legal text-center position-relative">
-        <div class="container">
-          <!-- <div class="copyright">
+    <div class="footer-legal text-center position-relative">
+      <div class="container">
+        <!-- <div class="copyright">
             &copy; Copyright <strong><span>UpConstruction</span></strong
             >. All Rights Reserved
           </div> -->
-          <div class="copyright">
-            &copy; Copyright <strong><span>MyGoParking</span></strong
-            >. All Rights Reserved
-          </div>
-          <div class="credits">
-            <!-- All the links in the footer should remain intact. -->
-            <!-- You can delete the links only if you purchased the pro version. -->
-            <!-- Licensing information: https://bootstrapmade.com/license/ -->
-            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/upconstruction-bootstrap-construction-website-template/ -->
-            <!-- Designed by
+        <div class="copyright">
+          &copy; Copyright <strong><span>MyGoParking</span></strong
+          >. All Rights Reserved
+        </div>
+        <div class="credits">
+          <!-- All the links in the footer should remain intact. -->
+          <!-- You can delete the links only if you purchased the pro version. -->
+          <!-- Licensing information: https://bootstrapmade.com/license/ -->
+          <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/upconstruction-bootstrap-construction-website-template/ -->
+          <!-- Designed by
             <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed
             by <a href="https://themewagon.com">ThemeWagon</a> -->
-          </div>
-          <div class="credits">網頁最佳體驗大小:1920x1080px</div>
         </div>
+        <div class="credits">網頁最佳體驗大小:1920x1080px</div>
       </div>
-    </footer>
-    <!-- End Footer -->
+    </div>
+  </footer>
+  <!-- End Footer -->
 
-    <!-- 意見回復 -->
-  </div>
+  <!-- 意見回復 -->
 </template>
 
 <style lang="css" scoped>
