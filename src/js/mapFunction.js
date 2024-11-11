@@ -6,7 +6,6 @@ import "leaflet.locatecontrol/dist/L.Control.Locate.min.js";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet.markercluster/dist/leaflet.markercluster.js";
-import router from "@/router";
 
 //抓定位：Leaflet.Locate
 export const locatePlace = (mapRef) => {

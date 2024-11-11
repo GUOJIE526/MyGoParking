@@ -54,13 +54,16 @@ export async function subscribeUserToPush() {
     });
     console.log("Subscription Data:", pushSubscription.toJSON());
     // 將訂閱資料傳送到後端
-    await fetch("https://localhost:7077/api/Notification/subscribe", {
-      method: "POST",
-      body: JSON.stringify(pushSubscription),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    await fetch(
+      "https://goparkapi.azurewebsites.net/api/Notification/subscribe",
+      {
+        method: "POST",
+        body: JSON.stringify(pushSubscription),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     console.log("User is subscribed to push notifications.");
   } catch (err) {
     // The subscription wasn't successful.
