@@ -21,21 +21,17 @@ const SearchHandler = (searchQuery) => {
   }
 };
 
-
-
-
 onMounted(async () => {
   userStore.checkLoginStatus(); // 初始化時檢查登入狀態
   const user = localStorage.getItem("isLogin");
   const data = JSON.parse(user);
   if (userStore.isLogin) {
     await router.push("/search");
-  }
-  else{
+  } else {
     try {
-    await scrollanimation();
-    await new Promise((resolve) => setTimeout(resolve, 300)); // 模擬加載
-    await nextTick();
+      await scrollanimation();
+      await new Promise((resolve) => setTimeout(resolve, 300)); // 模擬加載
+      await nextTick();
     } catch (error) {
       console.error("Error during mounted:", error);
     } finally {
@@ -139,7 +135,7 @@ const redirectSignUp = () => {
       </div>
       <div class="buildings" style="--width: 300px; --quantity: 7">
         <div class="building">
-          <img v-once src="@/images/buildings.svg" alt="">
+          <img v-once src="@/images/buildings.svg" alt="" />
         </div>
         <!-- <div class="building" style="--position: 1">
           <img v-once src="@/images/school.svg" alt="" />
@@ -600,7 +596,7 @@ const redirectSignUp = () => {
 
 /* 車子部分 */
 #car_container {
-  background-image: url("../images/road.png");
+  background-image: url("/road.png");
   background-size: contain;
   height: 15vmin;
   width: 400vw;

@@ -4,7 +4,7 @@ import { MotionPathPlugin } from "gsap/all";
 
 export async function scrollanimation() {
   await LoadSVG();
-  
+
   gsap.registerPlugin(ScrollTrigger);
   gsap.registerPlugin(MotionPathPlugin);
 
@@ -58,7 +58,7 @@ export async function scrollanimation() {
           opacity: 1,
         });
       } else if (0.8 < progress && progress < 1) {
-        // console.log("測試測試"); 
+        // console.log("測試測試");
       } else {
         gsap.to(".question", {
           duration: 0.5,
@@ -82,11 +82,11 @@ export async function scrollanimation() {
         x: `${totalBuildingMoveDistance}px`,
         y: 0,
         opacity: 1,
-        ease:'power1.out',
+        ease: "power1.out",
       });
 
       gsap.set("#car_container", {
-        backgroundImage: "url('src/images/road.png')",
+        backgroundImage: "url('/road.png')",
       });
 
       //太陽跟月亮的旋轉
@@ -98,7 +98,7 @@ export async function scrollanimation() {
       });
 
       //天空背景顏色
-      let color,mountainColor;
+      let color, mountainColor;
       let color_progress = progress * 1.1;
       if (color_progress <= 0.3) {
         // 保持 skyblue 顏色
@@ -107,22 +107,40 @@ export async function scrollanimation() {
         mountainColor = "#3EAE57"; // 綠色
       } else if (color_progress > 0.3 && color_progress <= 0.35) {
         // 從 skyblue 到淡橙色過渡
-        color = gsap.utils.interpolate("#87CEEB", "#FFEF99",(color_progress - 0.3) * 20); // 淡黃色過渡
-        mountainColor = gsap.utils.interpolate("#3EAE57", "#6B8E23", (color_progress - 0.3) * 20); // 深綠色
+        color = gsap.utils.interpolate(
+          "#87CEEB",
+          "#FFEF99",
+          (color_progress - 0.3) * 20
+        ); // 淡黃色過渡
+        mountainColor = gsap.utils.interpolate(
+          "#3EAE57",
+          "#6B8E23",
+          (color_progress - 0.3) * 20
+        ); // 深綠色
       } else if (color_progress > 0.35 && color_progress <= 0.4) {
         // 從淡橙色到 #FF8600 過渡
-        color = gsap.utils.interpolate("#FFEF99", "#FF8600", (color_progress - 0.35) * 10 );
-        mountainColor = gsap.utils.interpolate("#6B8E23", "#3B5A1B", (color_progress - 0.35) * 10); // 更深的綠色
+        color = gsap.utils.interpolate(
+          "#FFEF99",
+          "#FF8600",
+          (color_progress - 0.35) * 10
+        );
+        mountainColor = gsap.utils.interpolate(
+          "#6B8E23",
+          "#3B5A1B",
+          (color_progress - 0.35) * 10
+        ); // 更深的綠色
       } else if (color_progress > 0.4) {
         // 從橙色到黑色過渡
-        color = gsap.utils.interpolate( "#FF8600", "#000", (color_progress - 0.4) * 10 );
+        color = gsap.utils.interpolate(
+          "#FF8600",
+          "#000",
+          (color_progress - 0.4) * 10
+        );
         mountainColor = "#121C08";
-      } 
-
-
+      }
 
       gsap.to(".view-point", { backgroundColor: color });
-      gsap.to(".mountain path[fill='#3EAE57']", { fill: mountainColor});
+      gsap.to(".mountain path[fill='#3EAE57']", { fill: mountainColor });
     },
     onLeave: () => {
       gsap.set(".main_stars", { duration: 0.5, opacity: "0" });
@@ -360,14 +378,14 @@ export async function scrollanimation() {
 
 export function killAnimation() {
   // 清理所有 ScrollTrigger 和 GSAP 動畫
-  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
   gsap.killTweensOf("*");
 }
 
 //載入我需要的SVG, 有Car, Star,Mountain
 //為了不讓HTML看起來擁腫, 所以使用fetch後再將它放置需要的位置
 async function LoadSVG() {
-  await fetch("src/images/car.svg")
+  await fetch("/car.svg")
     .then((response) => {
       return response.text();
     })
@@ -376,7 +394,7 @@ async function LoadSVG() {
       document.getElementById("car_body").innerHTML = svg;
     });
 
-  await fetch("src/images/stars.svg")
+  await fetch("/stars.svg")
     .then((response) => {
       return response.text();
     })
@@ -401,10 +419,11 @@ async function LoadSVG() {
       // console.log(stars);
     });
 
-
-    //載入山的背景, 要用svg, 因為我要改變山的顏色
-    await fetch("src/images/background.svg")
-    .then((response) => { return response.text()})
+  //載入山的背景, 要用svg, 因為我要改變山的顏色
+  await fetch("/background.svg")
+    .then((response) => {
+      return response.text();
+    })
     .then((svg) => {
       // console.log(svg)
       document.getElementById("background").innerHTML = svg;
