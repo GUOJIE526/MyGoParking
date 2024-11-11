@@ -59,30 +59,30 @@ const Guide = (guide) => {
     <!-- ======= guide Section ======= -->
     <section id="guide" class="guide">
       <img src="/src/images/guide_car.svg" alt="">
-      <div class="my_container shadow" data-aos="fade-up">
+      <div class="my_container shadow overflow-auto" data-aos="fade-up">
         <div class="container invisible d-flex flex-column">
           <div class="row visible flex-grow-1" style="flex-basis: 15%;">
             <div class="question col-12">
-              <div class="row my-3">
-                <div class="box col-6 col-lg-3">
+              <div id="guide_select" class="row my-3">
+                <div class="box col-md-3">
                   <a href="javascript: void(0)" class="btn" @click.prevent="Guide('Search')">
                       停車搜尋
                       <span></span><span></span><span></span><span></span>
                   </a>
                 </div>
-                <div class="box col-6 col-lg-3">
+                <div class="box col-md-3">
                   <a href="javascript: void(0)" class="btn" @click.prevent="Guide('Reservation')">
                       預訂服務
                       <span></span><span></span><span></span><span></span>
                   </a>
                 </div>
-                <div class="box col-6 col-lg-3">
+                <div class="box col-md-3">
                   <a href="javascript: void(0)" class="btn" @click.prevent="Guide('Monthly')">
                       月租服務
                       <span></span><span></span><span></span><span></span>
                   </a>
                 </div>
-                <div class="box col-6 col-lg-3">
+                <div class="box col-md-3">
                   <a href="javascript: void(0)" class="btn" @click.prevent="Guide('Payment')">
                       繳費系統
                       <span></span><span></span><span></span><span></span>
@@ -216,7 +216,8 @@ const Guide = (guide) => {
             </div>
           </div>
           <div class="row visible flex-grow-1" style="flex-basis: 5%;">
-            <div class="answer col-12">
+            <div class="answer col-12 invisible">
+              預留空間
               <!-- <button class="page-button">Prev</button> -->
               <!-- <button class="page-button">Next</button> -->
             </div>
@@ -383,6 +384,11 @@ const Guide = (guide) => {
   opacity: 0;
 }
 
+.carousel-item>img{
+  height: auto;
+}
+
+
 .carousel.show {
   display: block;
   animation: show 0.5s ease-in forwards;
@@ -397,6 +403,14 @@ const Guide = (guide) => {
   }
 }
 
+@media (max-width: 768px) {
+  #guide_select{
+    transform: rotate(90deg);
+  }
+  #carouselSearchCaptions{
+    transform: rotate(90deg);
+  }
+}
 
 /* #carouselSearchCaptions{
   display: block;
