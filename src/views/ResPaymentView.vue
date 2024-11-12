@@ -101,7 +101,7 @@ async function requestPayment() {
       },
     ],
     redirectUrls: {
-      confirmUrl: "https://www.mygoparking.com/ResConfirm", // 確認頁面
+      confirmUrl: "http://localhost:5173/ResConfirm", // 確認頁面
       cancelUrl: `${baseUrl}Cancel`, // 取消頁面
     },
     options: null, // 可選：額外選項
