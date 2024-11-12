@@ -38,21 +38,20 @@ onMounted(() => {
 
 // 確認付款
 async function confirmPayment() {
+  isDisabled.value = true;
+  paymentStatus.value = "確認中...";
+
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get("orderId");
+  const transactionId = params.get("transactionId");
+  const payment = { amount: amount.value, currency: "TWD" };
+
+  const confirmUrl = `${baseApiUrl}/Confirm?transactionId=${transactionId}&orderId=${orderId}`;
+
+  const check = await axios.post(confirmUrl, payment, {
+    headers: { "Content-Type": "application/json" },
+  });
   try {
-    isDisabled.value = true;
-    paymentStatus.value = "確認中...";
-
-    const params = new URLSearchParams(window.location.search);
-    const orderId = params.get("orderId");
-    const transactionId = params.get("transactionId");
-    const payment = { amount: amount.value, currency: "TWD" };
-
-    const confirmUrl = `${baseApiUrl}/Confirm?transactionId=${transactionId}&orderId=${orderId}`;
-
-    const check = await axios.post(confirmUrl, payment, {
-      headers: { "Content-Type": "application/json" },
-    });
-
     if (check.data.returnCode === "0000") {
       alert("付款確認成功");
       paymentStatus.value = "交易狀態: 成功";
