@@ -13,7 +13,6 @@ const paymentStatus = ref("等待確認...");
 const isDisabled = ref(true);
 const buttonClass = ref("btn-secondary");
 const startTime = ref("");
-const usestore = useUserStore();
 
 // API 路徑
 const baseApiUrl = `${import.meta.env.VITE_API_BASEURL}/LinePay`;
@@ -50,7 +49,6 @@ async function confirmPayment() {
     const payment = { amount: amount.value, currency: "TWD" };
 
     const confirmUrl = `${baseApiUrl}/Confirm?transactionId=${transactionId}&orderId=${orderId}`;
-    console.log(orderId, transactionId, confirmUrl);
     const check = await axios.post(confirmUrl, payment, {
       headers: { "Content-Type": "application/json" },
     });
@@ -61,12 +59,31 @@ async function confirmPayment() {
       // 更新付款狀態
       alert("訂單已確認");
       console.log("確認成功:", check.data.returnCode);
-      const response = await axios.post(
-        `${baseApiUrl}/UpdateResPayment`,
-        { orderId, userId: usestore.userId },
-        { headers: { "Content-Type": "application/json" } }
-      );
-      console.log("更新付款狀態:", response.data);
+      const usestore = useUserStore();
+      const response = await fetch(`${baseApiUrl}/UpdateResPayment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId,
+          userId: usestore.userId,
+        }),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("更新付款狀態:", responseData);
+      } else {
+        console.error("更新付款狀態失敗", response.statusText);
+      }
+
+      // const response = await axios.post(
+      //   `${baseApiUrl}/UpdateResPayment`,
+      //   { orderId },
+      //   { headers: { "Content-Type": "application/json" } }
+      // );
+      // console.log("更新付款狀態:", response.data);
     } else if (check.data.returnCode === "1172") {
       alert("重複付款");
       paymentStatus.value = "交易狀態: 已有重複訂單";
