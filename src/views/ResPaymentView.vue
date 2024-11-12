@@ -238,9 +238,9 @@ const handlePayment = () => {
                 <p><strong>停車地址：</strong>{{ lotInfo.lotLocation }}</p>
                 <p><strong>停車費用：</strong>{{ lotInfo.lotWeek }} 元/小時</p>
                 <p><strong>停車場類型：</strong>{{ lotInfo.lotType }}</p>
-                <p><strong>剩餘車位：</strong>{{ lotInfo.lotValid }}</p>
+                <p><strong>剩餘車位：</strong>{{ lotInfo.lotValid }} 個車位</p>
                 <p><strong>聯絡電話：</strong>{{ lotInfo.lotTel }}</p>
-                <p><strong>預約訂金:</strong> {{ lotInfo.lotResDeposit }}</p>
+                <p><strong>預約訂金:</strong> {{ lotInfo.lotResDeposit }}元</p>
               </div>
               <div class="text-center">
                 <h2 class="mt-5">選擇支付方式</h2>
