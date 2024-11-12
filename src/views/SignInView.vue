@@ -162,7 +162,7 @@ const sendResetLink = async () => {
 const bindLineUser = async (lineUserId, userId) => {
   try {
     const response = await fetch(
-      "https://localhost:7077/api/LineBinding/bind",
+      "https://goparkapi.azurewebsites.net/api/LineBinding/bind",
       {
         method: "POST",
         headers: {
