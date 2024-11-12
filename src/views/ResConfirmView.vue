@@ -4,6 +4,7 @@ import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
 import axios from "axios";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { useUserStore } from "@/stores/userStore";
 dayjs.extend(utc);
 // 初始化資料
 const amount = ref(0);
@@ -12,6 +13,7 @@ const paymentStatus = ref("等待確認...");
 const isDisabled = ref(true);
 const buttonClass = ref("btn-secondary");
 const startTime = ref("");
+const usestore = useUserStore();
 
 // API 路徑
 const baseApiUrl = `${import.meta.env.VITE_API_BASEURL}/LinePay`;
@@ -61,7 +63,7 @@ async function confirmPayment() {
       console.log("確認成功:", check.data.returnCode);
       const response = await axios.post(
         `${baseApiUrl}/UpdateResPayment`,
-        { orderId },
+        { orderId, userId: usestore.userId },
         { headers: { "Content-Type": "application/json" } }
       );
       console.log("更新付款狀態:", response.data);
