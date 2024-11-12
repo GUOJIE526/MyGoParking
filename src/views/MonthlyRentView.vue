@@ -205,7 +205,7 @@ async function requestPayment() {
       },
     ],
     redirectUrls: {
-      confirmUrl: `${window.location.origin}/MonthlyConfirm`, // 確認頁面
+      confirmUrl: "https://www.mygoparking.com/MonthlyConfirm", // 確認頁面
       cancelUrl: `${baseUrl}Cancel`, // 取消頁面
     },
     options: null, // 可選：額外選項

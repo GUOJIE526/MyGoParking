@@ -30,7 +30,9 @@ const totalAmount = computed(() => {
 
 // 車牌格式驗證
 const licensePlatePattern = /^[A-Z]{3}\d{4}$/;
-const isFormValid = computed(() => licensePlatePattern.test(licensePlate.value.trim()));
+const isFormValid = computed(() =>
+  licensePlatePattern.test(licensePlate.value.trim())
+);
 
 // 車牌輸入時轉換為大寫
 const onLicensePlateInput = (event) => {
@@ -61,9 +63,10 @@ const checkCouponsByLicensePlate = async () => {
     step.value = 2; // 設置為步驟 2
     errorMessage.value = ""; // 清除錯誤訊息
   } catch (error) {
-    errorMessage.value = error.response?.status === 404
-      ? error.response.data.message
-      : "系統錯誤，請稍後再試";
+    errorMessage.value =
+      error.response?.status === 404
+        ? error.response.data.message
+        : "系統錯誤，請稍後再試";
   }
 };
 
@@ -101,7 +104,9 @@ async function validatePlan() {
 // 儲存 MyInfo 到 sessionStorage
 function saveMyInfoToSession() {
   const couponId = selectedCoupon.value ? selectedCoupon.value.couponId : null;
-  const couponAmount = selectedCoupon.value ? selectedCoupon.value.couponAmount : null;
+  const couponAmount = selectedCoupon.value
+    ? selectedCoupon.value.couponAmount
+    : null;
 
   const MyInfo = {
     amount: totalAmount.value,
@@ -150,7 +155,7 @@ async function requestPayment() {
       },
     ],
     redirectUrls: {
-      confirmUrl: `${window.location.origin}/ChargeConfirmView`,
+      confirmUrl: "https://www.mygoparking.com/ChargeConfirmView",
       cancelUrl: `${baseUrl}Cancel`,
     },
   };
@@ -237,57 +242,134 @@ async function initiatePayment() {
         <div class="row justify-content-center">
           <div class="col-md-8 col-lg-6">
             <div class="card shadow-lg">
-              <div class="card-header bg-gradient-primary text-white text-center py-4">
-                <h2 class="mb-0">{{ step === 2 ? MylotName : "請輸入車牌查詢" }}</h2>
+              <div
+                class="card-header bg-gradient-primary text-white text-center py-4"
+              >
+                <h2 class="mb-0">
+                  {{ step === 2 ? MylotName : "請輸入車牌查詢" }}
+                </h2>
               </div>
               <div class="card-body p-5">
-                <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+                <div v-if="errorMessage" class="alert alert-danger">
+                  {{ errorMessage }}
+                </div>
                 <div class="mb-4">
                   <label for="plate" class="form-label fs-5">車牌號碼：</label>
-                  <input type="text" id="plate" class="form-control form-control-lg" v-model="licensePlate"
-                    @input="onLicensePlateInput" :readonly="step === 2" placeholder="請輸入車牌號碼 (格式：ABC1234)" required />
+                  <input
+                    type="text"
+                    id="plate"
+                    class="form-control form-control-lg"
+                    v-model="licensePlate"
+                    @input="onLicensePlateInput"
+                    :readonly="step === 2"
+                    placeholder="請輸入車牌號碼 (格式：ABC1234)"
+                    required
+                  />
                 </div>
 
                 <div v-if="step === 2">
-                  <label for="coupon" class="form-label fs-5">選擇優惠券：</label>
-                  <select class="form-select form-select-lg" id="coupon" v-model="selectedCoupon">
+                  <label for="coupon" class="form-label fs-5"
+                    >選擇優惠券：</label
+                  >
+                  <select
+                    class="form-select form-select-lg"
+                    id="coupon"
+                    v-model="selectedCoupon"
+                  >
                     <option :value="null">不使用優惠券</option>
-                    <option v-for="coupon in Mycoupons" :key="coupon.couponId" :value="coupon">
-                      折價: {{ coupon.couponAmount }} 元，到期日: {{ coupon.endTime }}
+                    <option
+                      v-for="coupon in Mycoupons"
+                      :key="coupon.couponId"
+                      :value="coupon"
+                    >
+                      折價: {{ coupon.couponAmount }} 元，到期日:
+                      {{ coupon.endTime }}
                     </option>
                   </select>
 
-                  <label for="entry-time" class="form-label fs-5 mt-3">進場時間 :</label>
-                  <input type="text" id="entry-time" class="form-control form-control-lg" :value="entryTime" readonly />
+                  <label for="entry-time" class="form-label fs-5 mt-3"
+                    >進場時間 :</label
+                  >
+                  <input
+                    type="text"
+                    id="entry-time"
+                    class="form-control form-control-lg"
+                    :value="entryTime"
+                    readonly
+                  />
 
-                  <label for="duration" class="form-label fs-5 mt-3">停車時間 :</label>
-                  <input type="text" id="duration" class="form-control form-control-lg" :value="`${durationHours} 小時`"
-                    readonly />
+                  <label for="duration" class="form-label fs-5 mt-3"
+                    >停車時間 :</label
+                  >
+                  <input
+                    type="text"
+                    id="duration"
+                    class="form-control form-control-lg"
+                    :value="`${durationHours} 小時`"
+                    readonly
+                  />
 
-                  <label for="amount" class="form-label fs-5 mt-3">原始金額 :</label>
-                  <input type="text" id="total" class="form-control form-control-lg" :value="`${plateAmount} 元`"
-                    readonly />
+                  <label for="amount" class="form-label fs-5 mt-3"
+                    >原始金額 :</label
+                  >
+                  <input
+                    type="text"
+                    id="total"
+                    class="form-control form-control-lg"
+                    :value="`${plateAmount} 元`"
+                    readonly
+                  />
 
-                  <label for="total" class="form-label fs-5 mt-3">總金額 :</label>
-                  <input type="text" id="total" class="form-control form-control-lg" :value="`${totalAmount} 元`"
-                    readonly />
+                  <label for="total" class="form-label fs-5 mt-3"
+                    >總金額 :</label
+                  >
+                  <input
+                    type="text"
+                    id="total"
+                    class="form-control form-control-lg"
+                    :value="`${totalAmount} 元`"
+                    readonly
+                  />
 
-                  <label for="payment-method" class="form-label fs-5 mt-3">付款方式 :</label>
-                  <select id="payment-method" class="form-select form-select-lg" v-model="selectedPaymentMethod">
+                  <label for="payment-method" class="form-label fs-5 mt-3"
+                    >付款方式 :</label
+                  >
+                  <select
+                    id="payment-method"
+                    class="form-select form-select-lg"
+                    v-model="selectedPaymentMethod"
+                  >
                     <option value="LinePay">Line Pay</option>
                     <option value="ECPay">綠界金流</option>
                   </select>
 
-                  <form ref="ecpayForm" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="post"
-                    v-show="false">
-                    <input v-for="(value, key) in paymentParameters" :key="key" :name="key" :value="value"
-                      type="hidden" />
+                  <form
+                    ref="ecpayForm"
+                    action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5"
+                    method="post"
+                    v-show="false"
+                  >
+                    <input
+                      v-for="(value, key) in paymentParameters"
+                      :key="key"
+                      :name="key"
+                      :value="value"
+                      type="hidden"
+                    />
                   </form>
                 </div>
 
                 <div class="d-grid gap-2 mt-5">
-                  <button type="button" class="btn btn-warning" :disabled="!isFormValid"
-                    @click="step === 1 ? checkCouponsByLicensePlate() : initiatePayment()">
+                  <button
+                    type="button"
+                    class="btn btn-warning"
+                    :disabled="!isFormValid"
+                    @click="
+                      step === 1
+                        ? checkCouponsByLicensePlate()
+                        : initiatePayment()
+                    "
+                  >
                     {{ step === 1 ? "下一步" : "送出" }}
                   </button>
                 </div>
