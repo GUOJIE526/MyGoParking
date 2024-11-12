@@ -50,7 +50,7 @@ async function confirmPayment() {
     const payment = { amount: amount.value, currency: "TWD" };
 
     const confirmUrl = `${baseApiUrl}/Confirm?transactionId=${transactionId}&orderId=${orderId}`;
-
+    console.log(orderId, transactionId, confirmUrl);
     const check = await axios.post(confirmUrl, payment, {
       headers: { "Content-Type": "application/json" },
     });
