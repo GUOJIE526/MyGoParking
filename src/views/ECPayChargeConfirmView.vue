@@ -36,9 +36,9 @@ onMounted(async () => {
             };
 
             await axios.post(`${baseApiUrl}/ConfirmPayment`, payload);
-            console.log('付款確認完成，交易記錄已更新');
+            //console.log('付款確認完成，交易記錄已更新');
         } catch (error) {
-            console.error('付款確認或更新記錄失敗:', error);
+            //console.error('付款確認或更新記錄失敗:', error);
         }
     } else {
         alert('無法讀取方案資料，請重新選擇方案。');

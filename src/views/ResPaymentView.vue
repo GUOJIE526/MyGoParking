@@ -29,16 +29,16 @@ const mapUrl = computed(
 onMounted(async () => {
   try {
     MycarId.value = Number(sessionStorage.getItem("carId")) || 0;
-    console.log("c=" + MycarId.value);
+    //console.log("c=" + MycarId.value);
 
     MylotId.value = Number(sessionStorage.getItem("lotId")) || 0;
-    console.log("l=" + MylotId.value);
+    //console.log("l=" + MylotId.value);
 
     MyAmount.value = Number(sessionStorage.getItem("resDeposit")) || 0;
-    console.log("D=" + MyAmount.value);
+    //console.log("D=" + MyAmount.value);
 
     startTime.value = sessionStorage.getItem("startTime");
-    console.log("取得的 startTime:", startTime.value);
+    //console.log("取得的 startTime:", startTime.value);
 
     if (MylotId.value === 0) {
       lotInfo.errorMessage = "LotId 無效";
@@ -103,7 +103,7 @@ async function requestPayment() {
     options: null, // 可選：額外選項
   };
   // 使用 console.log 檢查 payment 的內容
-  console.log("準備發送的 payment 物件:", JSON.stringify(payment, null, 2));
+  //console.log("準備發送的 payment 物件:", JSON.stringify(payment, null, 2));
 
   try {
     const response = await axios.post(`${baseUrl}CreateDay`, payment, {
@@ -111,10 +111,10 @@ async function requestPayment() {
     });
 
     const paymentUrl = response.data.info.paymentUrl.web;
-    console.log("前往支付頁面:", paymentUrl);
+    //console.log("前往支付頁面:", paymentUrl);
     window.location.href = paymentUrl;
   } catch (error) {
-    console.error("交易失敗:", error);
+    //console.error("交易失敗:", error);
     alert("交易失敗，請稍後再試。");
   }
 }
@@ -126,7 +126,7 @@ async function requestPayment() {
 const ecpayForm = ref(null); // 將表單引用存儲在 ecpayForm 中
 const paymentParameters = ref({}); // 初始化空的支付參數物件
 async function fetchPaymentData() {
-  console.log("MylotId:", MylotId.value);
+  //console.log("MylotId:", MylotId.value);
   saveResPaymentInfo(MyAmount.value, lotInfo.lotName, MycarId.value, startTime.value);
   try {
     const paymentData = {
@@ -139,7 +139,7 @@ async function fetchPaymentData() {
       lotId: MylotId.value,
       startTime: startTime.value,
     };
-    console.log("paymentData:", paymentData); // 檢查 paymentData 結構
+    //console.log("paymentData:", paymentData); // 檢查 paymentData 結構
 
     const response = await axios.post(
       "https://localhost:7077/api/ECPay/ResECPayForm",
@@ -149,15 +149,15 @@ async function fetchPaymentData() {
       }
     );
 
-    console.log("回傳的 response:", response); // 顯示完整的回應內容
-    console.log("回傳的 response.data:", response.data); // 顯示回應的資料
+    //console.log("回傳的 response:", response); // 顯示完整的回應內容
+    //console.log("回傳的 response.data:", response.data); // 顯示回應的資料
 
     paymentParameters.value = response.data;
 
     await nextTick(); // 確保 DOM 更新完成後操作
     submitForm();
   } catch (error) {
-    console.error("獲取支付參數失敗:", error);
+    //console.error("獲取支付參數失敗:", error);
     alert("交易失敗，請稍後再試。");
   }
 }
@@ -167,7 +167,7 @@ function submitForm() {
   if (ecpayForm.value) {
     ecpayForm.value.submit(); // 使用 ref 引用直接提交表單
   } else {
-    console.error("未找到表單");
+    //console.error("未找到表單");
   }
 }
 
@@ -188,9 +188,9 @@ const selectPayment = (payKey) => {
   if (PayData[payKey]) {
     selectedPay.value = PayData[payKey];
     selectedPayKey.value = payKey;
-    console.log("已選擇金流方式:", selectedPay.value);
+    //console.log("已選擇金流方式:", selectedPay.value);
   } else {
-    console.error("無效的金流 Key:", payKey);
+    //console.error("無效的金流 Key:", payKey);
   }
 };
 //-----------------------------------------------------------------------------------------------
@@ -200,7 +200,7 @@ const handlePayment = () => {
   } else if (selectedPayKey.value === "ecPay") {
     fetchPaymentData();
   } else {
-    console.error("請選擇一個支付方式");
+    //console.error("請選擇一個支付方式");
   }
 };
 </script>

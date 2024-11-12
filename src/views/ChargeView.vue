@@ -90,10 +90,10 @@ async function validatePlan() {
     const response = await axios.post(`${baseUrl}ValidateDay`, payload, {
       headers: { "Content-Type": "application/json" },
     });
-    alert(amount === 0 ? "金額為 0，已記錄並提交成功。" : "方案驗證成功。");
+    alert(amount === 0 ? "金額為 0，已記錄並提交成功。" : "金額驗證成功。");
     return response.data.isValid;
   } catch (error) {
-    alert("方案驗證失敗，請確認後再試。");
+    alert("金額驗證失敗，請確認後再試。");
     return false;
   }
 }
@@ -114,7 +114,7 @@ function saveMyInfoToSession() {
   };
 
   sessionStorage.setItem("MyInfo", JSON.stringify(MyInfo));
-  console.log("MyInfo 已儲存至 sessionStorage:", MyInfo);
+  //console.log("MyInfo 已儲存至 sessionStorage:", MyInfo);
 }
 
 // LinePay 支付流程
@@ -199,7 +199,7 @@ async function fetchPaymentData() {
     await nextTick();
     submitForm();
   } catch (error) {
-    console.error("ECPay 交易失敗:", error.response?.data || error.message);
+    //console.error("ECPay 交易失敗:", error.response?.data || error.message);
     alert("ECPay交易失敗，請稍後再試。");
   }
 }
