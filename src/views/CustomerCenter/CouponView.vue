@@ -2,7 +2,8 @@
 import { ref } from "vue";
 import { useUserStore } from "@/stores/userStore"; //要取Pinia
 
-const API_URL = "https://goparkapi.azurewebsites.net/api";
+const API_URL = `${import.meta.env.VITE_API_BASEURL}`;
+
 const userStore = useUserStore();
 const userId = userStore.userId;
 const coupons = ref([]); //傳回的優惠券放此

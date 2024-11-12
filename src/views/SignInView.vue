@@ -9,6 +9,7 @@ import { useRoute } from "vue-router";
 const API_URL = `${import.meta.env.VITE_API_BASEURL}/Customers/login`;
 const API_FURL = `${import.meta.env.VITE_API_BASEURL}/Customers/forgot`;
 
+const Line_Bind_URL = `${import.meta.env.VITE_API_BASEURL}`;
 const route = useRoute(); //要從uri取得lineid
 
 const userStore = useUserStore();
@@ -161,16 +162,13 @@ const sendResetLink = async () => {
 // 綁定Line
 const bindLineUser = async (lineUserId, userId) => {
   try {
-    const response = await fetch(
-      "https://localhost:7077/api/LineBinding/bind",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ line_user_id: lineUserId, user_id: userId }),
-      }
-    );
+    const response = await fetch(`${Line_Bind_URL}/LineBinding/bind`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ line_user_id: lineUserId, user_id: userId }),
+    });
 
     if (!response.ok) {
       const errorData = await response.json();

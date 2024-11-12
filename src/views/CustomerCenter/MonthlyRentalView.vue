@@ -4,9 +4,9 @@ import { onMounted, ref } from "vue";
 import { useUserStore } from "@/stores/userStore"; //要取Pinia
 import { useRouter } from "vue-router";
 
+const API_URL = `${import.meta.env.VITE_API_BASEURL}`;
 const userStore = useUserStore();
 const userId = userStore.userId;
-const API_URL = "https://goparkapi.azurewebsites.net/api";
 const router = useRouter();
 const activePage = ref("current"); //目前在哪個頁面(當前合約還是歷史)
 const monthlyRentals = ref([]);
