@@ -4,7 +4,6 @@ import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
 import axios from "axios";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { useUserStore } from "@/stores/userStore";
 dayjs.extend(utc);
 // 初始化資料
 const amount = ref(0);
@@ -59,33 +58,12 @@ async function confirmPayment() {
       // 更新付款狀態
       alert("訂單已確認");
       console.log("確認成功:", check.data.returnCode);
-      const usestore = useUserStore();
-      const response = await fetch(`${baseApiUrl}/UpdateResPayment`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          orderId,
-          userId: usestore.userId,
-        }),
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log("更新付款狀態:", responseData);
-        alert("更新付款狀態成功");
-      } else {
-        console.error("更新付款狀態失敗", response.statusText);
-        alert("更新付款狀態失敗");
-      }
-
-      // const response = await axios.post(
-      //   `${baseApiUrl}/UpdateResPayment`,
-      //   { orderId },
-      //   { headers: { "Content-Type": "application/json" } }
-      // );
-      // console.log("更新付款狀態:", response.data);
+      const response = await axios.post(
+        `${baseApiUrl}/UpdateResPayment`,
+        { orderId },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      console.log("更新付款狀態:", response.data);
     } else if (check.data.returnCode === "1172") {
       alert("重複付款");
       paymentStatus.value = "交易狀態: 已有重複訂單";
