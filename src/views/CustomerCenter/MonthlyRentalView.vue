@@ -14,8 +14,9 @@ const filteredRentals = ref([]); // 儲存經過過濾的紀錄
 const currentRental = ref([]); //還沒到期的合約
 const licensePlate = ref([]); //儲存用戶的車牌
 const choseCar = ref("請選擇車牌");
-const choseDate = ref("");
+const choseDates = ref(null);
 const search = ref(""); //搜尋行政區
+const rentFee = ref([0, 5000]);
 const isLoaded = ref(false);
 
 //分頁控制屬性
@@ -84,15 +85,28 @@ const applyFilters = () => {
     }
 
     // 如果有選擇日期，亦進行日期篩選
-    if (choseDate.value) {
-      //只比對日期部分
-      const startDate = new Date(rental.startDate).toLocaleDateString();
-      const chosenDate = new Date(choseDate.value).toLocaleDateString();
-      isMatch = isMatch && startDate == chosenDate;
+    if (choseDates.value && choseDates.value.length == 2) {
+      const startDate = new Date(choseDates.value[0])
+        .toISOString()
+        .split("T")[0];
+      const endDate = new Date(choseDates.value[1]).toISOString().split("T")[0];
+      const rentalDate = new Date(rental.startDate).toISOString().split("T")[0];
+      isMatch = isMatch && rentalDate >= startDate && rentalDate <= endDate;
     }
+
     //如果有搜尋行政區
     if (search.value) {
       isMatch = isMatch && rental.district.includes(search.value);
+    }
+    //如果篩選金額有變動
+    if (rentFee.value[0] != 0 || rentFee.value[1] != 5000) {
+      //月租費
+      const rentalFee =
+        rental.amount / getRentalPlan(rental.amount, rental.monRentalRate);
+      isMatch =
+        isMatch &&
+        rentalFee >= rentFee.value[0] &&
+        rentalFee <= rentFee.value[1];
     }
 
     return isMatch; // 滿足所有篩選條件的紀錄才保留
@@ -192,31 +206,50 @@ onMounted(() => {
         </select>
       </div>
     </div>
-    <div
-      v-if="activePage == 'history'"
-      class="d-flex flex-column flex-md-row justify-content-between mb-2"
-    >
-      <div class="mb-2 col-12 col-md-5">
-        <span>起始日期 </span>
-        <el-date-picker
-          @change="applyFilters"
-          v-model="choseDate"
-          type="date"
-          placeholder="Pick a day"
-        />
-      </div>
+    <div v-if="activePage == 'history'">
+      <div
+        class="d-flex flex-column flex-md-row justify-content-between align-item-center mb-2"
+      >
+        <div class="mb-2 col-12 col-md-6">
+          <!-- 選擇日期 -->
+          <span class="me-2">起始日期 </span>
+          <el-date-picker
+            @change="applyFilters"
+            v-model="choseDates"
+            type="daterange"
+            range-separator="To"
+            start-placeholder="Start date"
+            end-placeholder="End date"
+          />
+        </div>
 
-      <!-- 搜尋行政區 -->
-      <div class="col-12 col-md-4">
-        <input
-          v-model="search"
-          @keyup="applyFilters"
-          type="text"
-          class="form-control"
-          aria-label="Sizing example input"
-          aria-describedby="inputGroup-sizing-sm"
-          placeholder="預訂停車場行政區(e.g., 三民區)"
-        />
+        <!-- 篩選月租費 -->
+        <div
+          class="mb-2 d-flex align-items-center col-md-3 col-12 justify-content"
+        >
+          <p class="col-md-4 mb-0">月租費</p>
+          <el-slider
+            @change="applyFilters"
+            class="col-md-7"
+            v-model="rentFee"
+            range
+            :max="5000"
+            :step="100"
+          />
+        </div>
+
+        <!-- 搜尋行政區 -->
+        <div class="col-12 col-md-3">
+          <input
+            v-model="search"
+            @keyup="applyFilters"
+            type="text"
+            class="form-control"
+            aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-sm"
+            placeholder="停車場行政區(e.g., 三民區)"
+          />
+        </div>
       </div>
     </div>
 
@@ -560,6 +593,10 @@ onMounted(() => {
   padding: 15px;
 }
 
+/* 篩選月租費滑桿顏色 */
+.el-slider {
+  --el-slider-main-bg-color: #f5c34e;
+}
 /* 當前合約&歷史合約按鈕 */
 .list {
   background-color: #f8f9fa;

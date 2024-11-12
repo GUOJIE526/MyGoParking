@@ -10,7 +10,7 @@ const parkingRecords = ref([]); //儲存所有停車紀錄
 const filteredRecords = ref([]); // 儲存經過過濾的紀錄
 const licensePlate = ref([]); //儲存用戶的車牌
 const choseCar = ref("請選擇車牌");
-const choseDates = ref([]);
+const choseDates = ref(null);
 const search = ref(""); //搜尋行政區
 
 //分頁控制屬性
@@ -59,7 +59,7 @@ const applyFilters = () => {
       isMatch = isMatch && record.licensePlate == choseCar.value;
     }
     //如果有選擇日期
-    if (choseDates.value) {
+    if (choseDates.value && choseDates.value.length == 2) {
       const startDate = new Date(choseDates.value[0])
         .toISOString()
         .split("T")[0];
