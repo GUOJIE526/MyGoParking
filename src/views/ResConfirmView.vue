@@ -57,12 +57,12 @@ async function confirmPayment() {
       alert("付款確認成功");
       paymentStatus.value = "交易狀態: 成功";
       // 更新付款狀態
+      alert("訂單已確認");
       const response = await axios.post(
         `${baseApiUrl}/UpdateResPayment`,
         { orderId },
         { headers: { "Content-Type": "application/json" } }
       );
-      alert("訂單已確認");
       console.log("確認成功:", check.data.returnCode);
     } else if (check.data.returnCode === "1172") {
       alert("重複付款");
