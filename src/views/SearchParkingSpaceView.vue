@@ -368,7 +368,7 @@ onBeforeUnmount(() => {
                             <p style="font-weight: 700">
                               費用：
                               <span style="color: red">
-                                {{ lot.weekdayRate }}
+                                {{ lot.weekdayRate }}/小時
                               </span>
                             </p>
                             <span v-if="lot.isETC" class="ms-2"
