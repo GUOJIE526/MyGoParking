@@ -2,7 +2,12 @@
 import { reactive, ref, computed, onMounted, nextTick } from "vue";
 import axios from "axios";
 import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
-const baseUrl = `${import.meta.env.VITE_API_BASEURL}/LinePay/`;
+
+//基本路徑
+// const myWebUrl = `window.location.origin`;
+const myWebUrl = import.meta.env.VITE_MY_WEB_URL;
+const baseUrl = `${import.meta.env.VITE_API_BASEURL}`;
+
 const MylotId = ref(0);
 const MycarId = ref(0);
 const MyAmount = ref(0);
@@ -44,7 +49,7 @@ onMounted(async () => {
       lotInfo.errorMessage = "LotId 無效";
       return;
     }
-    const response = await axios.post(`${baseUrl}ListenLotId`, {
+    const response = await axios.post(`${baseUrl}/LinePay/ListenLotId`, {
       LotId: MylotId.value,
     });
     Object.assign(lotInfo, response.data);
@@ -97,7 +102,7 @@ async function requestPayment() {
       },
     ],
     redirectUrls: {
-      confirmUrl: `${window.location.origin}/ResConfirm`, // 確認頁面
+      confirmUrl: `${myWebUrl}/ResConfirm`, // 確認頁面
       cancelUrl: `${baseUrl}Cancel`, // 取消頁面
     },
     options: null, // 可選：額外選項
@@ -106,7 +111,7 @@ async function requestPayment() {
   //console.log("準備發送的 payment 物件:", JSON.stringify(payment, null, 2));
 
   try {
-    const response = await axios.post(`${baseUrl}CreateDay`, payment, {
+    const response = await axios.post(`${baseUrl}/LinePay/CreateDay`, payment, {
       headers: { "Content-Type": "application/json" },
     });
 
@@ -134,7 +139,7 @@ async function fetchPaymentData() {
       TotalAmount: MyAmount.value,
       planId: "預定",
       PlanName: "預定金",
-      ClientBackURL: window.location.origin + "/ECPayConfirmView",
+      ClientBackURL: `${myWebUrl}/ECPayConfirmView`,
       carId: MycarId.value,
       lotId: MylotId.value,
       startTime: startTime.value,
@@ -142,7 +147,7 @@ async function fetchPaymentData() {
     //console.log("paymentData:", paymentData); // 檢查 paymentData 結構
 
     const response = await axios.post(
-      "https://localhost:7077/api/ECPay/ResECPayForm",
+      `${import.meta.env.VITE_API_BASEURL}/ECPay/ResECPayForm`,
       paymentData,
       {
         headers: { "Content-Type": "application/json" },

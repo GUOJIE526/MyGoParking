@@ -2,6 +2,11 @@
 import { ref, computed, onMounted, reactive, nextTick } from "vue";
 import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
 import axios from "axios";
+//基本路徑
+// const myWebUrl = `window.location.origin`;
+const myWebUrl = import.meta.env.VITE_MY_WEB_URL;
+// API 基本路徑
+const baseUrl = `${import.meta.env.VITE_API_BASEURL}/LinePay/`;
 
 const MycarId = ref(0);
 const MylotId = ref(0);
@@ -126,8 +131,7 @@ const selectPlan = (planKey) => {
   }
 };
 
-// API 基本路徑
-const baseUrl = `${import.meta.env.VITE_API_BASEURL}/LinePay/`;
+
 
 //驗證方案與金錢
 async function validatePlan() {
@@ -205,7 +209,7 @@ async function requestPayment() {
       },
     ],
     redirectUrls: {
-      confirmUrl: `${window.location.origin}/MonthlyConfirm`, // 確認頁面
+      confirmUrl: `${myWebUrl}/MonthlyConfirm`, // 確認頁面
       cancelUrl: `${baseUrl}Cancel`, // 取消頁面
     },
     options: null, // 可選：額外選項
@@ -246,7 +250,7 @@ async function fetchPaymentData() {
       ItemName: "月租停車場",
       TotalAmount: parseInt(selectedPlan.value.price, 10), // 模擬數據
       PlanName: selectedPlan.value.label,
-      ClientBackURL: window.location.origin + "/ECPayConfirmView", // 動態設置回調 URL
+      ClientBackURL: `${myWebUrl}/ECPayConfirmView`, // 動態設置回調 URL
       planId: selectedPlan.value.id, // 方案 ID
       carId: MycarId.value,
       lotId: MylotId.value,
