@@ -74,8 +74,10 @@ async function confirmPayment() {
       if (response.ok) {
         const responseData = await response.json();
         console.log("更新付款狀態:", responseData);
+        alert("更新付款狀態成功");
       } else {
         console.error("更新付款狀態失敗", response.statusText);
+        alert("更新付款狀態失敗");
       }
 
       // const response = await axios.post(
