@@ -233,6 +233,7 @@ onMounted(() => {
     </el-table>
     <!-- 分頁元件 -->
     <div class="d-flex justify-content-end mt-4">
+      <small>總停車費用</small>
       <el-pagination
         @current-change="handlePageChange"
         :current-page="currentPage"

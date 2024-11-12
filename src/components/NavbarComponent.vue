@@ -245,8 +245,16 @@ const submitMemberInfo = async () => {
                 <RouterLink
                   class="nav-link"
                   activeClass="active"
+                  :to="{ name: 'set-plate' }"
+                  >車牌設定</RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink
+                  class="nav-link"
+                  activeClass="active"
                   :to="{ name: 'parking-order' }"
-                  >停車訂單查詢</RouterLink
+                  >預訂紀錄</RouterLink
                 >
               </li>
               <li>
@@ -254,7 +262,15 @@ const submitMemberInfo = async () => {
                   class="nav-link"
                   activeClass="active"
                   :to="{ name: 'parking-record' }"
-                  >停車紀錄查詢</RouterLink
+                  >停車紀錄</RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink
+                  class="nav-link"
+                  activeClass="active"
+                  :to="{ name: 'monthlyRental' }"
+                  >月租中心</RouterLink
                 >
               </li>
               <li>

@@ -88,7 +88,7 @@ loadCoupons();
           <!-- 優惠券本體 -->
           <div id="coupon" class="card d-flex flex-row mb-3">
             <!-- 照片保持在左邊，文字保持在右邊 -->
-            <div class="col-md-5 col-4 p-1 img-container">
+            <div class="col-md-5 col-5 p-1 img-container">
               <img
                 src="/src/assets/images/coupon_2.webp"
                 class="img-fluid rounded-start"
@@ -96,7 +96,7 @@ loadCoupons();
                 style="width: 100%; height: 100%; object-fit: cover"
               />
             </div>
-            <div class="col-md-7 col-8">
+            <div class="col-md-7 col-7">
               <div class="card-body">
                 <p class="fw-bold mb-1" style="font-size: 14px">
                   新用戶專屬停車券
