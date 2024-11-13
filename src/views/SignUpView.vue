@@ -3,6 +3,7 @@ import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import router from "@/router";
+import Swal from "sweetalert2";
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 const API_URL = `${BASE_URL}/Customers/sign`;
@@ -33,7 +34,7 @@ const autoLogin = async (password) => {
       userStore.login();
       Swal.fire({
         title: data.message,
-        icon: "success"
+        icon: "success",
       });
       userStore.isRegisterSuccess = true;
       router.push({ name: "search", query: { pwd: userData.value.psw } }); // 跳轉到首頁
@@ -41,14 +42,14 @@ const autoLogin = async (password) => {
       // 登入失敗處理
       Swal.fire({
         title: data.message,
-        icon: "question"
+        icon: "question",
       });
     }
   } else {
     Swal.fire({
-        title: "登入失敗",
-        icon: "question"
-      });
+      title: "登入失敗",
+      icon: "question",
+    });
   }
 };
 
@@ -113,9 +114,9 @@ const validate = async () => {
     if (response.ok) {
       const result = await response.json();
       if (result.message === "註冊成功!") {
-          Swal.fire({
+        Swal.fire({
           title: result.message,
-          icon: "success"
+          icon: "success",
         });
         userStore.updateUser(data);
         const password = userData.value.psw;
@@ -124,7 +125,7 @@ const validate = async () => {
       } else {
         Swal.fire({
           title: result.message,
-          icon: "question"
+          icon: "question",
         });
       }
     }

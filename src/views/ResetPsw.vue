@@ -2,6 +2,7 @@
 import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
 import { useRouter, useRoute } from "vue-router";
 import { ref } from "vue";
+import Swal from "sweetalert2";
 // import { useUserStore } from "@/stores/userStore";
 
 const API_URL = `${import.meta.env.VITE_API_BASEURL}/Customers/reset`;
@@ -55,7 +56,11 @@ const resetPassword = async () => {
     }
 
     const result = await response.json();
-    message.value = result.message || "密碼已成功重設！";
+    Swal.fire({
+      title: result.message || "密碼已成功重設！",
+      icon: "success",
+    });
+    //message.value = result.message || "密碼已成功重設！";
     setTimeout(() => {
       router.push("/signIn"); // 重設密碼成功後跳轉到登入頁面
     }, 2000); // 等待2秒後自動跳轉

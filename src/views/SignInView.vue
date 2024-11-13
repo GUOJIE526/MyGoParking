@@ -5,6 +5,7 @@ import { ref, onMounted } from "vue";
 import { useUserStore } from "@/stores/userStore";
 
 import { useRoute } from "vue-router";
+import Swal from "sweetalert2";
 
 const API_URL = `${import.meta.env.VITE_API_BASEURL}/Customers/login`;
 const API_FURL = `${import.meta.env.VITE_API_BASEURL}/Customers/forgot`;

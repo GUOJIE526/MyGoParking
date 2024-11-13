@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import { ref, watch } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import { useCouponStore } from "@/stores/couponStore";
+import Swal from "sweetalert2";
 
 const router = useRouter();
 const TIMEOUT_DURATION = 30 * 60 * 1000; // 30 分鐘
@@ -123,16 +124,16 @@ const updateMemberInfo = async () => {
   if (response.ok) {
     userStore.updateUser(renew);
     Swal.fire({
-          title: "會員資料已成功更新",
-          icon: "sucess"
-        });
+      title: "會員資料已成功更新",
+      icon: "sucess",
+    });
     await couponStore.addCoupon();
     autoClose();
   } else {
     Swal.fire({
-          title: "會員資料更新失敗",
-          icon: "question"
-        });
+      title: "會員資料更新失敗",
+      icon: "question",
+    });
     //throw new Error("會員資料更新失敗");
   }
 };
