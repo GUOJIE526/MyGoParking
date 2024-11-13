@@ -195,7 +195,7 @@ async function fetchPaymentData() {
       TotalAmount: totalAmount.value,
       planId: "停車繳費",
       PlanName: "停車繳費",
-      ClientBackURL: `${myWebUrl}//ECPayCharge`,
+      ClientBackURL: `${myWebUrl}/ECPayCharge`,
       carId: MycarId.value,
       lotId: MylotId.value,
     };
