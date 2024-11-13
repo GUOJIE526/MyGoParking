@@ -8,12 +8,13 @@ export const useCouponStore = defineStore("couponStore", {
   actions: {
     async addCoupon() {
       const userStore = useUserStore();
+      let couponNumber = NewGuid();
       try {
         const BASE_URL = import.meta.env.VITE_API_BASEURL;
         const ADD_URL = `${BASE_URL}/Customers/coupon`;
         const couponData = {
           couponId: 0,
-          couponCode: "787878",
+          couponCode: couponNumber,
           discountAmount: 50,
           validFrom: "2024-01-01T00:00:00",
           validUntil: "2024-12-01T00:00:00",
@@ -35,7 +36,7 @@ export const useCouponStore = defineStore("couponStore", {
               title: result.message,
               icon: "success",
               showConfirmButton: false,
-              timer: 1500
+              timer: 1500,
             });
             // userStore.isCouponClaimed = true;
           } else if (
@@ -61,7 +62,7 @@ export const useCouponStore = defineStore("couponStore", {
           title: error.message,
           icon: "info",
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
         // console.error(error.message);
       }
