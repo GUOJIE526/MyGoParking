@@ -439,13 +439,13 @@ onMounted(() => {
                   <div class="error-message"></div>
                   <div class="sent-message">您已成功登入!</div>
 
-                  <button v-if="!isForgot" type="submit" @click="send">
+                  <button v-if="!isForgot" type="submit" @click.prevent="send">
                     登入
                   </button>
                   <button
                     v-if="isForgot"
                     class="button-17"
-                    @click="sendResetLink"
+                    @click.prevent="sendResetLink"
                   >
                     送出
                   </button>
