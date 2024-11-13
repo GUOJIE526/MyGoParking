@@ -177,7 +177,7 @@ async function requestPayment() {
 
     console.log(response.data.info.message);
   } catch (error) {
-    alert("交易失敗，請稍後再試。");
+    alert("交易失敗，請稍後再試。" + error.response?.data.message);
   }
 }
 
