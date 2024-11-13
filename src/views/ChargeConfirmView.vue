@@ -50,7 +50,7 @@ async function confirmPayment() {
                 Myamount: amount.value,
                 MycouponId: MycouponId.value
             };
-            console.log('發送的 Payload (金額為0且有優惠券):', JSON.stringify(payload, null, 2));
+            //console.log('發送的 Payload (金額為0且有優惠券):', JSON.stringify(payload, null, 2));
 
             const response = await axios.post(
                 `${baseApiUrl}/UpdateEntryExitPayment`,
@@ -85,7 +85,7 @@ async function confirmPayment() {
         if (MycouponId.value !== null) {
             payload.MycouponId = MycouponId.value;
         }
-        console.log('發送的 Payload:', JSON.stringify(payload, null, 2));
+        //console.log('發送的 Payload:', JSON.stringify(payload, null, 2));
 
 
 
@@ -94,7 +94,10 @@ async function confirmPayment() {
             const response = await axios.post(
                 `${baseApiUrl}/UpdateEntryExitPayment`,
                 payload,
-                { headers: { 'Content-Type': 'application/json' } }
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
             );
             paymentStatus.value = '交易狀態: 成功';
             setTimeout(() => (window.location.href = "/"), 3000);
@@ -108,14 +111,14 @@ async function confirmPayment() {
         }
 
     } catch (error) {
-        console.error('交易確認失敗:', error);
+        //console.error('交易確認失敗:', error);
         paymentStatus.value = '交易狀態: 失敗，請稍後再試';
 
         // 使用 error.response 來檢查錯誤回應
         if (error.response) {
-            console.log('錯誤詳細:', error.response.data);
+            //console.log('錯誤詳細:', error.response.data);
         } else {
-            console.log('錯誤詳細:', error.message);
+            //console.log('錯誤詳細:', error.message);
         }
     } finally {
         isDisabled.value = false;
@@ -127,9 +130,9 @@ async function confirmPayment() {
 <template>
     <BreadcrumbsComponent>
         <template #title>
-            <h2>月租付款</h2>
+            <h2>停車付款</h2>
         </template>
-        <template #page>月租付款</template>
+        <template #page>停車付款</template>
     </BreadcrumbsComponent>
     <div class="payment-form-container">
         <h1 class="text-center mb-4">支付確認頁面</h1>

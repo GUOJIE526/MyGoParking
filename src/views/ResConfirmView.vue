@@ -60,20 +60,23 @@ async function confirmPayment() {
       const response = await axios.post(
         `${baseApiUrl}/UpdateResPayment`,
         { orderId },
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true  // 確保憑證（如 cookies）被包含在請求中
+        }
       );
-      console.log("確認成功:", check.data.returnCode);
+      //console.log("確認成功:", check.data.returnCode);
     } else if (check.data.returnCode === "1172") {
       alert("重複付款");
       paymentStatus.value = "交易狀態: 已有重複訂單";
-      console.log("確認成功:", check.data.returnCode);
+      //console.log("確認成功:", check.data.returnCode);
     } else {
       paymentStatus.value = `交易狀態: ${check.data.message}`;
     }
 
     setTimeout(() => (window.location.href = "/"), 300);
   } catch (error) {
-    console.error("交易確認失敗:", error);
+    //console.error("交易確認失敗:", error);
     paymentStatus.value = "交易狀態: 失敗，請稍後再試";
     setTimeout(() => (window.location.href = "/"), 1000);
   } finally {
@@ -97,41 +100,18 @@ async function confirmPayment() {
       </div>
       <div class="form-group mb-4">
         <label for="amount" class="form-label">預約訂金</label>
-        <input
-          type="text"
-          id="amount"
-          class="form-control form-control-lg"
-          :value="`${amount} TWD`"
-          readonly
-        />
+        <input type="text" id="amount" class="form-control form-control-lg" :value="`${amount} TWD`" readonly />
       </div>
       <div class="form-group mb-4">
         <label for="paymentStatus" class="form-label">交易狀態</label>
-        <input
-          type="text"
-          id="paymentStatus"
-          class="form-control form-control-lg"
-          :value="paymentStatus"
-          readonly
-        />
+        <input type="text" id="paymentStatus" class="form-control form-control-lg" :value="paymentStatus" readonly />
       </div>
       <div class="form-group mb-4">
         <label for="paymentStatus" class="form-label">入場時間</label>
-        <input
-          type="text"
-          id="paymentStatus"
-          class="form-control form-control-lg"
-          readonly
-          :value="startTime"
-        />
+        <input type="text" id="paymentStatus" class="form-control form-control-lg" readonly :value="startTime" />
       </div>
       <div class="text-center">
-        <button
-          class="btn btn-lg mt-3"
-          :class="[buttonClass]"
-          @click.prevent="confirmPayment"
-          :disabled="isDisabled"
-        >
+        <button class="btn btn-lg mt-3" :class="[buttonClass]" @click.prevent="confirmPayment" :disabled="isDisabled">
           確認支付
         </button>
       </div>

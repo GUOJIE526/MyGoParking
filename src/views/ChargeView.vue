@@ -2,8 +2,11 @@
 import { ref, computed, nextTick } from "vue";
 import axios from "axios";
 import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
-
-const baseUrl = `${import.meta.env.VITE_API_BASEURL}/LinePay/`;
+//基本路徑
+// const myWebUrl = `window.location.origin`;
+const myWebUrl = import.meta.env.VITE_MY_WEB_URL;
+const baseUrl = import.meta.env.VITE_API_BASEURL;
+//const baseUrl = `${import.meta.env.VITE_API_BASEURL}/LinePay/`;
 
 const licensePlate = ref("");
 const selectedCoupon = ref(null); // 優惠券的初始值設為 null
@@ -46,7 +49,7 @@ const checkCouponsByLicensePlate = async () => {
       return;
     }
 
-    const response = await axios.post(`${baseUrl}FindMyParking`, {
+    const response = await axios.post(`${baseUrl}/LinePay/FindMyParking`, {
       licensePlate: licensePlate.value,
     });
 
@@ -87,13 +90,13 @@ async function validatePlan() {
   };
 
   try {
-    const response = await axios.post(`${baseUrl}ValidateDay`, payload, {
+    const response = await axios.post(`${baseUrl}/LinePay/ValidateDay`, payload, {
       headers: { "Content-Type": "application/json" },
     });
-    alert(amount === 0 ? "金額為 0，已記錄並提交成功。" : "方案驗證成功。");
+    alert(amount === 0 ? "金額為 0，已記錄並提交成功。" : "金額驗證成功。");
     return response.data.isValid;
   } catch (error) {
-    alert("方案驗證失敗，請確認後再試。");
+    alert("金額驗證失敗，請確認後再試。");
     return false;
   }
 }
@@ -114,7 +117,7 @@ function saveMyInfoToSession() {
   };
 
   sessionStorage.setItem("MyInfo", JSON.stringify(MyInfo));
-  console.log("MyInfo 已儲存至 sessionStorage:", MyInfo);
+  //console.log("MyInfo 已儲存至 sessionStorage:", MyInfo);
 }
 
 // LinePay 支付流程
@@ -150,13 +153,13 @@ async function requestPayment() {
       },
     ],
     redirectUrls: {
-      confirmUrl: `${window.location.origin}/ChargeConfirmView`,
-      cancelUrl: `${baseUrl}Cancel`,
+      confirmUrl: `${myWebUrl}/ChargeConfirmView`,
+      cancelUrl: `${baseUrl}/LinePay/Cancel`,
     },
   };
 
   try {
-    const response = await axios.post(`${baseUrl}CreateRes`, payment, {
+    const response = await axios.post(`${baseUrl}/LinePay/CreateRes`, payment, {
       headers: { "Content-Type": "application/json" },
     });
 
@@ -183,7 +186,7 @@ async function fetchPaymentData() {
       TotalAmount: totalAmount.value,
       planId: "停車繳費",
       PlanName: "停車繳費",
-      ClientBackURL: window.location.origin + "/ECPayCharge",
+      ClientBackURL: `${myWebUrl}//ECPayCharge`,
       carId: MycarId.value,
       lotId: MylotId.value,
     };
@@ -199,7 +202,7 @@ async function fetchPaymentData() {
     await nextTick();
     submitForm();
   } catch (error) {
-    console.error("ECPay 交易失敗:", error.response?.data || error.message);
+    //console.error("ECPay 交易失敗:", error.response?.data || error.message);
     alert("ECPay交易失敗，請稍後再試。");
   }
 }
