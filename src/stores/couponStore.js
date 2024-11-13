@@ -14,7 +14,7 @@ export const useCouponStore = defineStore("couponStore", {
         const ADD_URL = `${BASE_URL}/Customers/coupon`;
         const couponData = {
           couponId: 0,
-          couponCode: couponNumber,
+          couponCode: `#${couponNumber}`,
           discountAmount: 50,
           validFrom: "2024-01-01T00:00:00",
           validUntil: "2024-12-01T00:00:00",
