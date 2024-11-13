@@ -23,7 +23,7 @@ const userStore = useUserStore();
 //建立Signal連接
 const connection = new signalR.HubConnectionBuilder()
   .withUrl(
-    `https://www.mygoparking.com/reservationHub?userId=${userStore.userId}`,
+    `https://goparkapi.azurewebsites.net/reservationHub?userId=${userStore.userId}`,
     {
       withCredentials: true,
     }
