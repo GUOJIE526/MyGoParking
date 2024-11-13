@@ -49,13 +49,13 @@ const loadUserInfo = async () => {
   try {
     const response = await fetch(GET_TURL);
     if (!response.ok) {
-      console.log("讀取失敗")
+      console.log("讀取失敗");
       // throw new Error("讀取失敗");
     }
     const data = await response.json();
     userStore.updateUser(data);
   } catch (error) {
-    console.log("讀取失敗")
+    console.log("讀取失敗");
     // alert("讀取失敗: " + error.message);
   }
 };
@@ -65,11 +65,17 @@ const toggleEdit = async () => {
   if (isEditing.value) {
     const userId = userStore.userId;
     const PUT_TURL = `${PUT_URL}${userId}`;
-    
+    const userEdit = {
+      username: userStore.username,
+      email: userStore.email,
+      phone: userStore.phone,
+      licensePlate: userStore.licensePlate,
+    };
+
     try {
       const response = await fetch(PUT_TURL, {
         method: "PUT",
-        body: JSON.stringify(userStore.$state),
+        body: JSON.stringify(userEdit),
         headers: { "Content-Type": "application/json" },
       });
 
@@ -85,11 +91,9 @@ const toggleEdit = async () => {
 };
 
 const chanege = ref({
-  oldPassword : "",
-  newPassword : ""
-})
-
-
+  oldPassword: "",
+  newPassword: "",
+});
 
 const toggleEditPsw = async () => {
   if (isEditingPsw.value) {
@@ -124,24 +128,40 @@ onMounted(loadUserInfo);
         <div class="container">
           <div class="form-group">
             <li>姓名</li>
-            <span v-if="!isEditing">{{ userStore.username && userStore.username.trim() ? userStore.username : '尚未填寫姓名' }}</span>
-            <input v-if="isEditing" v-model="userStore.username"/>
+            <span v-if="!isEditing">{{
+              userStore.username && userStore.username.trim()
+                ? userStore.username
+                : "尚未填寫姓名"
+            }}</span>
+            <input v-if="isEditing" v-model="userStore.username" />
           </div>
           <div class="form-group">
             <li class="">電話</li>
-            <span v-if="!isEditing">{{ userStore.phone && userStore.phone.trim() ? userStore.phone : '尚未填寫電話' }}</span>
-            <input v-if="isEditing" v-model="userStore.phone"/>
+            <span v-if="!isEditing">{{
+              userStore.phone && userStore.phone.trim()
+                ? userStore.phone
+                : "尚未填寫電話"
+            }}</span>
+            <input v-if="isEditing" v-model="userStore.phone" />
           </div>
           <div class="form-group">
             <li>車牌</li>
-            <span v-if="!isEditing">{{ userStore.licensePlate && userStore.licensePlate.trim() ? userStore.licensePlate : '尚未填寫車牌' }}</span>
-            <input v-if="isEditing" v-model="userStore.licensePlate"/>
+            <span v-if="!isEditing">{{
+              userStore.licensePlate && userStore.licensePlate.trim()
+                ? userStore.licensePlate
+                : "尚未填寫車牌"
+            }}</span>
+            <input v-if="isEditing" v-model="userStore.licensePlate" />
           </div>
         </div>
         <div class="container col-12">
           <li>Email信箱</li>
-          <span v-if="!isEditing">{{ userStore.email && userStore.email.trim() ? userStore.email : '尚未填寫email' }}</span>
-          <input v-if="isEditing" v-model="userStore.email"/>
+          <span v-if="!isEditing">{{
+            userStore.email && userStore.email.trim()
+              ? userStore.email
+              : "尚未填寫email"
+          }}</span>
+          <input v-if="isEditing" v-model="userStore.email" />
         </div>
       </ul>
       <a href="#" class="button-17 me-3" @click="toggleEdit">{{

@@ -1,5 +1,6 @@
 import router from "@/router";
 import { defineStore } from "pinia";
+import Swal from "sweetalert2";
 import { ref, computed } from "vue";
 
 export const useUserStore = defineStore(
@@ -45,7 +46,7 @@ export const useUserStore = defineStore(
         icon: "success",
         title: "已登出",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
       router.push("/");
     };
@@ -70,7 +71,6 @@ export const useUserStore = defineStore(
       exit.value = data.exit ?? exit.value;
       message.value = data.message ?? message.value;
     };
-
 
     return {
       isLogin,
