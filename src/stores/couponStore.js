@@ -29,25 +29,41 @@ export const useCouponStore = defineStore("couponStore", {
           body: JSON.stringify(couponData),
         });
         const result = await response.json();
-        console.log(result);
         if (response.ok) {
           if (result.success === true) {
-            alert(result.message);
+            Swal.fire({
+              title: result.message,
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500
+            });
             // userStore.isCouponClaimed = true;
           } else if (
             result.success === false &&
             result.message === "領取失敗,您尚未註冊或登入"
           ) {
-            alert(result.message);
+            Swal.fire({
+              title: result.message,
+              icon: "info",
+            });
           } else if (
             result.success === false &&
             result.message === "領取失敗, 請洽客服人員"
           ) {
-            alert(result.message);
+            Swal.fire({
+              title: result.message,
+              icon: "info",
+            });
           }
         }
       } catch (error) {
-        console.error(error.message);
+        Swal.fire({
+          title: error.message,
+          icon: "info",
+          showConfirmButton: false,
+          timer: 1500
+        });
+        // console.error(error.message);
       }
     },
   },

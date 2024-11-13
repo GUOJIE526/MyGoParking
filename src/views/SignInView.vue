@@ -6,24 +6,195 @@ import { useUserStore } from "@/stores/userStore";
 
 import { useRoute } from "vue-router";
 
+
 const API_URL = `${import.meta.env.VITE_API_BASEURL}/Customers/login`;
 const API_FURL = `${import.meta.env.VITE_API_BASEURL}/Customers/forgot`;
+// const API_GURL = `${import.meta.env.VITE_API_BASEURL}/Customers/googleLogin`;
+// const API_VURL = `${import.meta.env.VITE_API_BASEURL}/Customers/verify`;
 
 const route = useRoute(); //要從uri取得lineid
 
 const userStore = useUserStore();
 
-// const StyledFirebaseAuth = () => {
-//   useEffect(() => {
 
-//   const unregisterAuthObserver = onAuthStateChanged(
-//    getAuth(),
-//    async (user) => {
-//      console.log('user', user);
-//    },
-//  );
-// }
-// )};
+// Google 登入
+// 狀態定義
+// const router = useRouter();
+// const loading = ref(false);
+// const err = ref(null);
+// const User = ref(null);
+// const licensePlate = ref('');
+// const showLicensePlateDialog = ref(false);
+// const showMergeDialog = ref(false);
+// const pendingGoogleToken = ref(null);
+
+// // Google 登入回調
+// const handleCredentialResponse = async (response) => {
+//   loading.value = true;
+//   error.value = null;
+  
+//   try {
+//     const result = await loginWithGoogle(response.credential);
+    
+//     if (result.existingAccount) {
+//       // 存在帳號，顯示合併確認
+//       pendingGoogleToken.value = response.credential;
+//       showMergeDialog.value = true;
+//     } else {
+//       // 新用戶，要求輸入車牌
+//       pendingGoogleToken.value = response.credential;
+//       showLicensePlateDialog.value = true;
+//     }
+//   } catch (err) {
+//     error.value = err.message || '登入失敗';
+//     console.error('Google 登入錯誤:', err);
+//   } finally {
+//     loading.value = false;
+//   }
+// };
+
+// // 發送 Google Token 到後端
+// const loginWithGoogle = async (token) => {
+//   const response = await fetch( API_GURL , {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({ token }),
+//   });
+
+//   if (!response.ok) {
+//     throw new Error(await response.text());
+//   }
+
+//   return await response.json();
+// };
+
+// // 提交車牌號碼
+// const submitLicensePlate = async () => {
+//   if (!licensePlate.value) {
+//     error.value = '請輸入車牌號碼';
+//     return;
+//   }
+
+//   loading.value = true;
+//   try {
+//     const response = await fetch('/api/auth/complete-registration', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         token: pendingGoogleToken.value,
+//         licensePlate: licensePlate.value,
+//       }),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error('註冊失敗');
+//     }
+
+//     const data = await response.json();
+//     userStore.setUser(data.user);
+//     user.value = data.user;
+//     showLicensePlateDialog.value = false;
+//     router.push('/dashboard');
+//   } catch (err) {
+//     err.value = err.message;
+//   } finally {
+//     loading.value = false;
+//   }
+// };
+
+// // 確認合併帳號
+// const confirmMerge = async () => {
+//   loading.value = true;
+//   try {
+//     const response = await fetch( API_VURL , {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         token: pendingGoogleToken.value,
+//       }),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error('帳號合併失敗');
+//     }
+
+//     const data = await response.json();
+//     userStore.setUser(data.user);
+//     User.value = data.user;
+//     showMergeDialog.value = false;
+//     router.push('/dashboard');
+//   } catch (err) {
+//     error.value = err.message;
+//   } finally {
+//     loading.value = false;
+//   }
+// };
+
+// // 登出
+// const handleLogout = async () => {
+//   try {
+//     await userStore.logout();
+//     User.value = null;
+//     router.push('/login');
+//   } catch (err) {
+//     error.value = '登出失敗';
+//   }
+// };
+
+// // 初始化 Google 登入
+// onMounted(() => {
+//   window.google.accounts.id.initialize({
+//     client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID, // 從環境變數獲取
+//     callback: handleCredentialResponse,
+//     auto_select: false,
+//     cancel_on_tap_outside: true
+//   });
+
+//   window.google.accounts.id.renderButton(
+//     document.getElementById('g_id_signin'),
+//     { 
+//       theme: 'outline', 
+//       size: 'large',
+//       width: 250,
+//       logo_alignment: 'center'
+//     }
+//   );
+
+//   // 檢查是否已經登入
+//   const token = localStorage.getItem('auth_token');
+//   if (token) {
+//     checkAuthStatus();
+//   }
+// });
+
+// // 檢查認證狀態
+// const checkAuthStatus = async () => {
+//   try {
+//     const response = await fetch('/api/auth/verify', {
+//       headers: {
+//         'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+//       }
+//     });
+    
+//     if (response.ok) {
+//       const userData = await response.json();
+//       user.value = userData;
+//       userStore.setUser(userData);
+//     } else {
+//       handleLogout();
+//     }
+//   } catch (err) {
+//     handleLogout();
+//   }
+// };
+
+// Google 登入 end
 
 // onMounted(async () => {
 //   window.google.accounts.id.initialize({
@@ -37,53 +208,46 @@ const userStore = useUserStore();
 //         );
 // });
 
-// const handleCredentialResponse = (response) => {
+// const googleLogin = async () =>
+// {
+//   const response = await fetch(API_GURL, {
+//     method: "POST",
+//     body: JSON.stringify(user),
+//     headers: { "Content-Type": "application/json" },
+//   });
+// }
+
+
+// const handleCredentialResponse = (response) => {//google API提供的response
 //       console.log('Google ID Token:', response.credential);
-//       // 在這裡處理 Google 登入邏輯，例如將 token 傳送至後端
-//        // 從 Google 登入回應中獲取用戶資料
-//       const userInfo = parseJwt(response.credential);  // 假設 parseJwt 函數可以解析 Google JWT 令牌
-//        // 檢查該電子郵件是否已經註冊
-//     checkIfEmailExists(userInfo.email).then((emailExists) => {
-//         if (emailExists) {
-//             // 如果該電子郵件已經註冊，顯示合併帳號選項或直接登入選項
-//             showAccountConflictModal(userInfo);
-//         } else {
-//             // 如果電子郵件尚未註冊，執行註冊邏輯
-//             registerUserWithGoogle(userInfo);
-//         }
-//     });
+//       // 將 Token 傳送到後端
+//     sendTokenToBackend(response.credential);
 //     };
 
-//     // JWT 解析函數（簡單範例）
-// const parseJwt = (token) => {
+// const sendTokenToBackend = async (idToken) => {
 //   try {
-//     const base64Url = token.split('.')[1];
-//     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-//     const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-//       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-//     }).join(''));
+//         const response = await fetch(API_VURL, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//                 token: idToken,   // 把 Google Token 發送到後端
+//             }),
+//         });
 
-//     return JSON.parse(jsonPayload);
-//   } catch (error) {
-//     console.error('Failed to parse JWT:', error);
-//     return null;
-//   }
+//         const data = await response.json();
+//         if (response.ok) {
+//             console.log('登入成功:', data);
+//             // 根據後端的回應處理登入後邏輯
+//         } else {
+//             console.error('登入失敗:', data.message);
+//         }
+//     } catch (error) {
+//         console.error('請求失敗:', error);
+//     }
 // };
 
-// 檢查電子郵件是否已經存在
-// const checkIfEmailExists = async (email) => {
-//     const response = await fetch('/api/user/checkEmail', {
-//         method: 'POST',
-//         body: JSON.stringify({ email }),
-//         headers: { 'Content-Type': 'application/json' },
-//     });
-//     const data = await response.json();
-//     return data.exists;  // 假設返回 { exists: true/false }
-// };
-// 顯示帳號衝突模態框
-// const showAccountConflictModal = (userInfo) => {
-//     // 顯示模態框，提示用戶該電子郵件已經註冊並提供合併帳號或登入選項
-// };
 
 const user = {
   email: "",
@@ -102,7 +266,11 @@ const send = async () => {
       // 成功登入時，儲存資料並更新 Pinia 狀態
       userStore.updateUser(datas);
       userStore.login(); // 更新登入狀態
-      alert("登入成功!!");
+      Swal.fire({
+        title: "登入成功!!",
+        text: "",
+        icon: "success"
+      });
       //-------處理line綁定的部分(如果有讀取到line user ID)
       // 嘗試從 sessionStorage 取得 line_user_id
       const lineUserId = sessionStorage.getItem("line_user_id");
@@ -116,10 +284,15 @@ const send = async () => {
 
       router.push("/search");
     } else if (datas.message === "無此帳號") {
-      alert("無此帳號,請重新登入!!");
+      Swal.fire({
+        title: "無此帳號,請重新登入!!",
+        icon: "question"
+      });
     } else {
-      console.log("非登入狀態");
-      //alert("登入失敗,請重新登入!!");
+      Swal.fire({
+        title: "登入失敗!!",
+        icon: "question"
+      }); 
     }
   }
 };
@@ -322,7 +495,7 @@ onMounted(() => {
 </template>
 
 <style lang="css" scoped>
-/* #g_id_signin{
+/*#g_id_signin{
   text-align: center; 
   margin-left: 50px; 
   display: inline-block;

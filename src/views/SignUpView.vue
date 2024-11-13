@@ -31,15 +31,24 @@ const autoLogin = async (password) => {
       //若已登入
       userStore.updateUser(data);
       userStore.login();
-      alert(data.message); // 提示成功訊息
+      Swal.fire({
+        title: data.message,
+        icon: "success"
+      });
       userStore.isRegisterSuccess = true;
       router.push({ name: "search", query: { pwd: userData.value.psw } }); // 跳轉到首頁
     } else if (!data.exit) {
       // 登入失敗處理
-      alert(data.message); // 顯示失敗訊息
+      Swal.fire({
+        title: data.message,
+        icon: "question"
+      });
     }
   } else {
-    alert("登入失敗");
+    Swal.fire({
+        title: "登入失敗",
+        icon: "question"
+      });
   }
 };
 
@@ -104,13 +113,19 @@ const validate = async () => {
     if (response.ok) {
       const result = await response.json();
       if (result.message === "註冊成功!") {
-        alert(result.message);
+          Swal.fire({
+          title: result.message,
+          icon: "success"
+        });
         userStore.updateUser(data);
         const password = userData.value.psw;
         await autoLogin(password); // 確保使用者輸入的密碼
         // await autoLogin(); // 註冊成功後自動登入
       } else {
-        alert(result.message);
+        Swal.fire({
+          title: result.message,
+          icon: "question"
+        });
       }
     }
   }
