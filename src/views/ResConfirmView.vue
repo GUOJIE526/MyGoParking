@@ -56,12 +56,6 @@ async function confirmPayment() {
       alert("付款確認成功");
       paymentStatus.value = "交易狀態: 成功";
       // 更新付款狀態
-      alert("訂單已確認");
-      const check = await axios.post(confirmUrl, payment, {
-        headers: { "Content-Type": "application/json" },
-      });
-      console.log("確認成功:", check.data.returnCode);
-      alert("訂單已確認");
       const response = await axios.post(
         `${baseApiUrl}/UpdateResPayment`,
         { orderId },
