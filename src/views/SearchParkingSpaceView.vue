@@ -65,6 +65,9 @@ const SearchHandler = async (searchQuery) => {
       const lat = parseFloat(data.latitude);
       const lon = parseFloat(data.longitude);
 
+      const marker = L.marker([lat, lon], { icon: locationIcon }).bindPopup(
+        `位置：${searchQuery}`
+      );
       if (!searchMarkerGroup.value) {
         searchMarkerGroup.value = L.layerGroup().addTo(map.value);
       }
@@ -73,9 +76,6 @@ const SearchHandler = async (searchQuery) => {
         map.value.removeLayer(userLocationMarker.value);
         userLocationMarker.value = null;
       }
-      const marker = L.marker([lat, lon], { icon: locationIcon }).bindPopup(
-        `位置：${searchQuery}`
-      );
       searchMarkerGroup.value.addLayer(marker);
       map.value.setView([lat, lon], 15);
       updateUrlQuery(searchQuery);
