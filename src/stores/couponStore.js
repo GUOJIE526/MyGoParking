@@ -8,6 +8,14 @@ export const useCouponStore = defineStore("couponStore", {
   actions: {
     async addCoupon() {
       const userStore = useUserStore();
+      const g = function () {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+      };
+      const NewGuid = function () {
+        return (
+          g() + g() + "-" + g() + "-" + g() + "-" + g() + "-" + g() + g() + g()
+        );
+      };
       let couponNumber = NewGuid();
       try {
         const BASE_URL = import.meta.env.VITE_API_BASEURL;
