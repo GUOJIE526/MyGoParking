@@ -39,7 +39,7 @@ const updateUrlQuery = (newQuery) => {
 
 // ResMon 方法裡加上導航邏輯
 const ResMon = (lot) => {
-  console.log("lot:", lot);
+  //console.log("lot:", lot);
   router.push({
     name: "resmon", // 目標路由的名稱
     query: {
@@ -368,7 +368,7 @@ onBeforeUnmount(() => {
                             <p style="font-weight: 700">
                               費用：
                               <span style="color: red">
-                                {{ lot.weekdayRate }}/小時
+                                {{ lot.weekdayRate }}元/小時
                               </span>
                             </p>
                             <span v-if="lot.isETC" class="ms-2"

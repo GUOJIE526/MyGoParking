@@ -31,11 +31,11 @@ if ("serviceWorker" in navigator) {
       const registration = await navigator.serviceWorker.register(
         "/service-worker.js"
       );
-      console.log("Service Worker registered with scope:", registration.scope);
+      //console.log("Service Worker registered with scope:", registration.scope);
 
       // 確保 service worker 已經準備好
       const swRegistration = await navigator.serviceWorker.ready;
-      console.log("Service Worker is ready:", swRegistration);
+      //console.log("Service Worker is ready:", swRegistration);
     } catch (error) {
       console.error("Service Worker registration failed:", error);
     }

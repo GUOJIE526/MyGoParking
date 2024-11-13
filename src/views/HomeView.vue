@@ -6,6 +6,7 @@ import { ref } from "vue";
 import { onBeforeRouteLeave, useRouter } from "vue-router";
 import { subscribeUserToPush } from "../js/userToPush";
 import { useUserStore } from "@/stores/userStore";
+import Swal from "sweetalert2";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -33,6 +34,11 @@ onMounted(async () => {
       await new Promise((resolve) => setTimeout(resolve, 300)); // 模擬加載
       await nextTick();
     } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `Something went wrong! ${error}`,
+      });
       console.error("Error during mounted:", error);
     } finally {
       isLoading.value = false;
