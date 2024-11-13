@@ -405,12 +405,7 @@ onMounted(() => {
           </div>
 
           <div class="col-lg-5" data-aos="fade">
-            <form
-              @submit.prevent="send"
-              action="forms/quote.php"
-              method="post"
-              class="php-email-form"
-            >
+            <form action="forms/quote.php" method="post" class="php-email-form">
               <h3 v-if="!isForgot">登入</h3>
               <h3 v-if="isForgot">忘記密碼</h3>
               <p v-if="!isForgot">請輸入信箱及密碼</p>
@@ -444,7 +439,9 @@ onMounted(() => {
                   <div class="error-message"></div>
                   <div class="sent-message">您已成功登入!</div>
 
-                  <button v-if="!isForgot" type="submit">登入</button>
+                  <button v-if="!isForgot" type="submit" @click="send">
+                    登入
+                  </button>
                   <button
                     v-if="isForgot"
                     class="button-17"
