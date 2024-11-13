@@ -297,8 +297,8 @@ const send = async () => {
 
 //忘記密碼
 
-const message = ref("");
-const error = ref("");
+// const message = ref("");
+// const error = ref("");
 const isForgot = ref(false);
 
 const forgot = () => {
@@ -306,8 +306,8 @@ const forgot = () => {
 };
 
 const sendResetLink = async () => {
-  message.value = "";
-  error.value = "";
+  // message.value = "";
+  // error.value = "";
 
   try {
     const response = await fetch(API_FURL, {
@@ -323,9 +323,17 @@ const sendResetLink = async () => {
     }
 
     const result = await response.json();
-    message.value = result.message || "重設密碼的連結已發送至您的 Email";
+    // message.value = result.message || "重設密碼的連結已發送至您的 Email";
+    Swal.fire({
+      title: "重設密碼的連結已發送至您的 Email",
+      icon: "success",
+    });
   } catch (err) {
-    error.value = err.message || "發送過程中出錯";
+    Swal.fire({
+      title: "發送過程中出錯",
+      icon: "error",
+    });
+    // error.value = err.message || "發送過程中出錯";
   }
 };
 
@@ -475,8 +483,8 @@ onMounted(() => {
                 </div>
               </div>
             </form>
-            <p v-if="message">{{ message }}</p>
-            <p v-if="error">{{ error }}</p>
+            <!-- <p v-if="message">{{ message }}</p>
+            <p v-if="error">{{ error }}</p> -->
           </div>
           <!-- End Quote Form -->
         </div>
