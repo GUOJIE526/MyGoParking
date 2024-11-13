@@ -125,7 +125,7 @@ const updateMemberInfo = async () => {
     userStore.updateUser(renew);
     Swal.fire({
       title: "會員資料已成功更新",
-      icon: "sucess",
+      icon: "success",
     });
     await couponStore.addCoupon();
     autoClose();
@@ -338,7 +338,7 @@ const submitMemberInfo = async () => {
     id="exampleModal"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
+    aria-hidden="false"
   >
     <div class="modal-dialog">
       <div class="modal-content">
