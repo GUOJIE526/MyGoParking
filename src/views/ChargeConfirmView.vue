@@ -94,7 +94,10 @@ async function confirmPayment() {
             const response = await axios.post(
                 `${baseApiUrl}/UpdateEntryExitPayment`,
                 payload,
-                { headers: { 'Content-Type': 'application/json' } }
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
             );
             paymentStatus.value = '交易狀態: 成功';
             setTimeout(() => (window.location.href = "/"), 3000);
@@ -127,9 +130,9 @@ async function confirmPayment() {
 <template>
     <BreadcrumbsComponent>
         <template #title>
-            <h2>月租付款</h2>
+            <h2>停車付款</h2>
         </template>
-        <template #page>月租付款</template>
+        <template #page>停車付款</template>
     </BreadcrumbsComponent>
     <div class="payment-form-container">
         <h1 class="text-center mb-4">支付確認頁面</h1>

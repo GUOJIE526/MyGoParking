@@ -57,7 +57,10 @@ async function confirmPayment() {
 
             // 更新付款狀態
             const response = await axios.post(`${baseApiUrl}/UpdatePaymentStatus`,
-                { orderId }, { headers: { 'Content-Type': 'application/json' } });
+                { orderId }, {
+                    headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            });
 
             //console.log('確認成功:', response.data);
         } else if (check.data.returnCode === '1172') {
@@ -94,7 +97,7 @@ async function confirmPayment() {
             </div>
             <div class="form-group mb-4">
                 <label for="amount" class="form-label">方案金額</label>
-                <input type="text" id="amount" class="form-control form-control-lg" :value="`${amount} TWD`" readonly />
+                <input type="text" id="amount" class="form-control form-control-lg" :value="`${amount} 元`" readonly />
             </div>
             <div class="form-group mb-4">
                 <label for="paymentStatus" class="form-label">入場時間</label>
