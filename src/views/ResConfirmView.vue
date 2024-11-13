@@ -61,21 +61,23 @@ async function confirmPayment() {
       const response = await axios.post(
         `${baseApiUrl}/UpdateResPayment`,
         { orderId },
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true, // 確保憑證（如 cookies）被包含在請求中
+        }
       );
-      console.log("更新付款狀態:", response.data);
+      //console.log("確認成功:", check.data.returnCode);
     } else if (check.data.returnCode === "1172") {
       alert("重複付款");
       paymentStatus.value = "交易狀態: 已有重複訂單";
-      console.log("確認成功:", check.data.returnCode);
+      //console.log("確認成功:", check.data.returnCode);
     } else {
       paymentStatus.value = `交易狀態: ${check.data.message}`;
     }
 
     setTimeout(() => (window.location.href = "/"), 300);
   } catch (error) {
-    console.error("交易確認失敗:", error);
-    alert("交易確認失敗，請稍後再試");
+    //console.error("交易確認失敗:", error);
     paymentStatus.value = "交易狀態: 失敗，請稍後再試";
     setTimeout(() => (window.location.href = "/"), 1000);
   } finally {

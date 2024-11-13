@@ -18,7 +18,7 @@ import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
 
     <!-- 主內容區塊 -->
     <div class="container" data-aos="fade-up">
-      <div class="row">
+      <div class="row mb-5">
         <div class="col-md-5 contact">
           <h3 class="mb-4">聯絡我們</h3>
           <h3 class="fw-bold">MyGO Parking</h3>

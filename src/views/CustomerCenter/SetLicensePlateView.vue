@@ -4,7 +4,7 @@ import { ref } from "vue";
 import { useUserStore } from "@/stores/userStore"; //要取Pinia
 import Swal from "sweetalert2";
 
-const API_URL = "https://goparkapi.azurewebsites.net/api";
+const API_URL = `${import.meta.env.VITE_API_BASEURL}`;
 const userStore = useUserStore();
 const userId = userStore.userId;
 
@@ -120,8 +120,8 @@ loadLicensePlates();
 
 <template>
   <div id="outside" class="container p-3 bg-light">
-    <h4 class="mb-3">車牌設定</h4>
-    <div class="mb-2">
+    <div class="mb-2 p-3">
+      <h4 class="mb-3">車牌設定</h4>
       <p>
         <i class="fa-solid fa-1"></i>
         <strong> 正確性：</strong
@@ -190,7 +190,7 @@ loadLicensePlates();
 #outside {
   box-shadow: -5px 0px 10px lightgrey;
   background: linear-gradient(to bottom right, white 40%, #dfe9f3 100%);
-  border-radius: 10px;
+  border-radius: 30px;
 }
 /* CSS */
 /* 新增按鈕樣式 */

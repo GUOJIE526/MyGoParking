@@ -22,12 +22,9 @@ const userStore = useUserStore();
 
 //建立Signal連接
 const connection = new signalR.HubConnectionBuilder()
-  .withUrl(
-    `https://goparkapi.azurewebsites.net/reservationHub?userId=${userStore.userId}`,
-    {
-      withCredentials: true,
-    }
-  )
+  .withUrl(`https://localhost:7077/reservationHub?userId=${userStore.userId}`, {
+    withCredentials: true,
+  })
   .withAutomaticReconnect() //自動重連
   .build();
 

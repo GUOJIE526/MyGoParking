@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
-const API_URL = "https://goparkapi.azurewebsites.net/api";
+const API_URL = `${import.meta.env.VITE_API_BASEURL}`;
 const route = useRoute();
 const id = route.params.id; //獲取路由的id
 const parkingInfo = ref({});
@@ -11,6 +11,16 @@ const loadParkingDetail = async () => {
   const response = await fetch(`${API_URL}/EntryExitManagements/${id}`);
   const datas = await response.json();
   parkingInfo.value = datas;
+};
+
+const formatTime = (time) => {
+  const date = new Date(time);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hour = date.getHours().toString().padStart(2, "0");
+  const minute = date.getMinutes().toString().padStart(2, "0");
+  return `${year}-${month}-${day}   ${hour}:${minute}`;
 };
 
 loadParkingDetail();
@@ -34,8 +44,8 @@ loadParkingDetail();
       <!-- 放停車資訊 -->
       <div class="col-12 col-md-5 d-flex flex-column justify-content-between">
         <div class="rounded p-2 mb-1" style="background-color: white">
-          <p class="mb-1">進場時間 {{ parkingInfo.entryTime }}</p>
-          <p>離場時間 {{ parkingInfo.exitTime }}</p>
+          <p class="mb-1">進場時間 {{ formatTime(parkingInfo.entryTime) }}</p>
+          <p>離場時間 {{ formatTime(parkingInfo.exitTime) }}</p>
           <p class="fw-bold">
             <i class="fa-regular fa-clock"></i> {{ parkingInfo.formatTime }}
           </p>

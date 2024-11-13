@@ -394,7 +394,7 @@ onMounted(() => {
             <h4>聯絡我們</h4>
             <ul>
               <li><a href="#" @click.prevent="reply">意見回復</a></li>
-              <li><a href="#">客服功能</a></li>
+              <li><a href="#" @click.prevent="redirected('/Customer-Service')">客服功能</a></li>
             </ul>
           </div>
           <!-- End footer links column-->
@@ -458,6 +458,10 @@ onMounted(() => {
   transform: translate3d(0, 0, 0);
   transition: transform ease-out 200ms;
   pointer-events: auto;
+}
+.menu-item>svg{
+  position: absolute;
+  transform: translate(-50%,70%);
 }
 
 @media (hover: none) and (pointer: coarse) {

@@ -113,7 +113,6 @@ const updateMemberInfo = async () => {
     salt: "",
     licensePlate: userStore.licensePlate,
   };
-  console.log(renew);
   const response = await fetch(PUTT_TURL, {
     method: "PUT",
     body: JSON.stringify(renew),
@@ -121,16 +120,20 @@ const updateMemberInfo = async () => {
       "Content-Type": "application/json",
     },
   });
-  console.log(response);
   if (response.ok) {
     userStore.updateUser(renew);
-    alert("會員資料已成功更新");
+    Swal.fire({
+          title: "會員資料已成功更新",
+          icon: "sucess"
+        });
     await couponStore.addCoupon();
-    //alert(couponStore.couponMessage);
-    // console.log('mess');
     autoClose();
   } else {
-    throw new Error("會員資料更新失敗");
+    Swal.fire({
+          title: "會員資料更新失敗",
+          icon: "question"
+        });
+    //throw new Error("會員資料更新失敗");
   }
 };
 
@@ -245,8 +248,16 @@ const submitMemberInfo = async () => {
                 <RouterLink
                   class="nav-link"
                   activeClass="active"
+                  :to="{ name: 'set-plate' }"
+                  >車牌設定</RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink
+                  class="nav-link"
+                  activeClass="active"
                   :to="{ name: 'parking-order' }"
-                  >停車訂單查詢</RouterLink
+                  >預訂紀錄</RouterLink
                 >
               </li>
               <li>
@@ -254,7 +265,15 @@ const submitMemberInfo = async () => {
                   class="nav-link"
                   activeClass="active"
                   :to="{ name: 'parking-record' }"
-                  >停車紀錄查詢</RouterLink
+                  >停車紀錄</RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink
+                  class="nav-link"
+                  activeClass="active"
+                  :to="{ name: 'monthlyRental' }"
+                  >月租中心</RouterLink
                 >
               </li>
               <li>
