@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useUserStore } from "./userStore";
+import Swal from "sweetalert2";
 
 export const useCouponStore = defineStore("couponStore", {
   state: () => ({
