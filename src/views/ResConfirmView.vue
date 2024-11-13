@@ -61,6 +61,7 @@ async function confirmPayment() {
         headers: { "Content-Type": "application/json" },
       });
       console.log("確認成功:", check.data.returnCode);
+      alert("訂單已確認");
       const response = await axios.post(
         `${baseApiUrl}/UpdateResPayment`,
         { orderId },
@@ -69,6 +70,7 @@ async function confirmPayment() {
           withCredentials: true, // 確保憑證（如 cookies）被包含在請求中
         }
       );
+      alert("訂單已確認");
       //console.log("確認成功:", check.data.returnCode);
     } else if (check.data.returnCode === "1172") {
       alert("重複付款");
