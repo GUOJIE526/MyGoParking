@@ -4,12 +4,13 @@ import SearchInputComponent from "@/components/SearchInputComponent.vue";
 import Swal from "sweetalert2";
 import "leaflet/dist/leaflet.css";
 import "leaflet/dist/leaflet.js";
+import "leaflet.locatecontrol/dist/L.Control.Locate.min.css";
+import "leaflet.locatecontrol/dist/L.Control.Locate.min.js";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet.markercluster/dist/leaflet.markercluster.js";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { locatePlace } from "@/js/mapFunction";
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 const API_URL = `${BASE_URL}/ParkingLot?address=`;
@@ -33,6 +34,43 @@ var locationIcon = L.icon({
   popupAnchor: [0, -35],
 });
 
+const locatePlace = () => {
+  L.control
+    .locate({
+      position: "topleft",
+      flyTo: true,
+      locateOptions: {
+        maxZoom: 16,
+        watch: true,
+        setView: true,
+        enableHighAccuracy: true,
+      },
+      strings: {
+        title: "定位我的位置",
+        metersUnit: "公尺",
+        feetUnit: "英尺",
+        popup: "距離誤差：{distance}{unit}以內",
+      },
+      clickBehavior: {
+        inView: "setView",
+        outOfView: "setView",
+        inViewNotFollowing: "inView",
+      },
+      onLocationerror: () => {
+        Swal.fire({
+          icon: "error",
+          title: "定位錯誤",
+          text: "無法取得當前位置，請確保定位已啟用!",
+        });
+      },
+    })
+    .addTo(map.value);
+  map.value.on("locationfound", (e) => {
+    const { lat, lng } = e.latlng;
+    updateDisplayLots(lat, lng);
+  });
+};
+
 const updateUrlQuery = (newQuery) => {
   router.push({ name: "search", query: { searchQuery: newQuery } });
 };
@@ -49,51 +87,70 @@ const ResMon = (lot) => {
   });
 };
 
+const isValidSearchQuery = (query) => {
+  const reg = /^[a-zA-Z\u4e00-\u9fa5\s]+$/u;
+  return reg.test(query);
+};
+
+// 搜尋停車場
 const SearchHandler = async (searchQuery) => {
   if (!map.value) {
     console.error("地圖尚未初始化");
     return;
   }
-  if (searchQuery) {
-    sessionStorage.setItem("searchQuery", searchQuery);
-    const res = await fetch(`${API_URL}${encodeURIComponent(searchQuery)}`);
-    if (!res.ok) {
-      throw new Error("Server無法獲取數據");
+  try {
+    if (!isValidSearchQuery(searchQuery)) {
+      throw new Error("請輸入正確的目的地!!");
     }
-    const data = await res.json();
-    if (data.latitude && data.longitude) {
-      const lat = parseFloat(data.latitude);
-      const lon = parseFloat(data.longitude);
+    if (searchQuery) {
+      sessionStorage.setItem("searchQuery", searchQuery);
+      const res = await fetch(`${API_URL}${encodeURIComponent(searchQuery)}`);
+      if (!res.ok) {
+        throw new Error("Server無法獲取數據");
+      }
+      const data = await res.json();
+      if (data.latitude && data.longitude) {
+        const lat = parseFloat(data.latitude);
+        const lon = parseFloat(data.longitude);
 
-      const marker = L.marker([lat, lon], { icon: locationIcon }).bindPopup(
-        `位置：${searchQuery}`
-      );
-      if (!searchMarkerGroup.value) {
-        searchMarkerGroup.value = L.layerGroup().addTo(map.value);
+        const marker = L.marker([lat, lon], { icon: locationIcon })
+          .bindPopup(`位置：${searchQuery}`)
+          .openPopup()
+          .addTo(map.value);
+        if (!searchMarkerGroup.value) {
+          searchMarkerGroup.value = L.layerGroup().addTo(map.value);
+        }
+        searchMarkerGroup.value.clearLayers();
+        if (userLocationMarker.value) {
+          map.value.removeLayer(userLocationMarker.value);
+          userLocationMarker.value = null;
+        }
+        searchMarkerGroup.value.addLayer(marker);
+        map.value.setView([lat, lon], 15);
+        updateUrlQuery(searchQuery);
+        // 更新顯示的停車場
+        updateDisplayLots(lat, lon);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "定位錯誤，請聯絡客服人員!",
+        });
       }
-      searchMarkerGroup.value.clearLayers();
-      if (userLocationMarker.value) {
-        map.value.removeLayer(userLocationMarker.value);
-        userLocationMarker.value = null;
-      }
-      searchMarkerGroup.value.addLayer(marker);
-      map.value.setView([lat, lon], 15);
-      updateUrlQuery(searchQuery);
-      // 更新顯示的停車場
-      updateDisplayLots(lat, lon);
     } else {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "定位錯誤，請聯絡客服人員!",
+        text: "數據異常，請聯絡客服人員!",
       });
     }
-  } else {
+  } catch (error) {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: "數據異常，請聯絡客服人員!",
+      text: `請輸入正確的目的地!!`,
     });
+    router.push({ name: "search" });
   }
 };
 
@@ -125,6 +182,15 @@ const loadParkingLots = async () => {
   }
 };
 
+const focusOnMarker = (lotId) => {
+  const marker = markerMap.value.get(lotId);
+  if (marker) {
+    map.value.setView(marker.getLatLng(), 18);
+  } else {
+    console.log("未找到對應marker");
+  }
+};
+
 //show 10 lots data
 const updateDisplayLots = (lat, lon) => {
   displayedParkingLots.value = parkingLots.value
@@ -133,8 +199,24 @@ const updateDisplayLots = (lat, lon) => {
       return { ...lot, distance };
     })
     .sort((a, b) => a.distance - b.distance);
-  //AddMarkerToMap();
 };
+
+// 計算兩個經緯度之間的距離函數
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const R = 6371; // 地球半徑，單位：公里
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // 得到距離
+  return distance;
+};
+
 //停車場加上marker
 const AddMarkerToMap = async () => {
   isLoading.value = true;
@@ -206,31 +288,6 @@ const AddMarkerToMap = async () => {
   isLoading.value = false;
 };
 
-const focusOnMarker = (lotId) => {
-  const marker = markerMap.value.get(lotId);
-  if (marker) {
-    map.value.setView(marker.getLatLng(), 18);
-  } else {
-    console.log("未找到對應marker");
-  }
-};
-
-// 計算兩個經緯度之間的距離函數
-const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  const R = 6371; // 地球半徑，單位：公里
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distance = R * c; // 得到距離
-  return distance;
-};
-
 // 添加 watch 監聽器
 watch(
   () => route.query.searchQuery,
@@ -253,11 +310,17 @@ watch(displayedParkingLots, () => {
 onMounted(async () => {
   if (map.value === null) {
     //初始化地圖
-    map.value = L.map("map").setView([22.6273, 120.3014], 15); //高雄經緯度
+    map.value = L.map("map", {
+      zoomControl: true,
+      zoom: 1,
+      zoomAnimation: false,
+      fadeAnimation: true,
+      markerZoomAnimation: true,
+    }).setView([22.6273, 120.3014], 15); //高雄經緯度
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "EasyPark © OpenStreetMap",
     }).addTo(map.value);
-    locatePlace(map.value);
+    locatePlace();
     // 初始化 LayerGroup
     markerGroup.value = L.layerGroup().addTo(map.value); // 停車場標記
     searchMarkerGroup.value = L.layerGroup().addTo(map.value); // 搜尋標記
@@ -368,8 +431,9 @@ onBeforeUnmount(() => {
                             <p style="font-weight: 700">
                               費用：
                               <span style="color: red">
-                                {{ lot.weekdayRate }}元/小時
+                                {{ lot.weekdayRate }}元
                               </span>
+                              /小時
                             </p>
                             <span v-if="lot.isETC" class="ms-2"
                               ><i class="fa-solid fa-charging-station"></i
