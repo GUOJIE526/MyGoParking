@@ -12,7 +12,7 @@ const emit = defineEmits(["search"]);
 const searchQuery = ref();
 const SearchHandler = () => {
   if (searchQuery.value) {
-    console.log(searchQuery.value);
+    //console.log(searchQuery.value);
     emit("search", searchQuery.value);
   }
 };

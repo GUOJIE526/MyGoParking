@@ -47,8 +47,8 @@ const startSignalRConnnection = async () => {
 };
 //接收事件
 connection.on("ReceiveNotification", (title, message) => {
-  console.log("ReceiveNotification");
-  console.log(title, message);
+  //console.log("ReceiveNotification");
+  //console.log(title, message);
   // 如果通知權限允許，顯示瀏覽器通知
   if (Notification.permission === "granted") {
     new Notification(title, {

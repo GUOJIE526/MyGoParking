@@ -36,7 +36,7 @@ const getLicensePlate = async () => {
   );
   const datas = await response.json();
   licensePlate.value = datas.userCarPlate;
-  console.log(licensePlate);
+  //console.log(licensePlate);
 };
 
 const loadMonthlyRental = async () => {
@@ -65,12 +65,12 @@ const loadMonthlyRental = async () => {
 //載入當前合約
 const loadCurrent = async () => {
   activePage.value = "current";
-  console.log("current");
+  //console.log("current");
 };
 //載入歷史合約
 const loadHistory = async () => {
   activePage.value = "history";
-  console.log("history");
+  //console.log("history");
 };
 
 //進階篩選

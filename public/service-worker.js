@@ -2,14 +2,14 @@
 
 // 註冊 install 事件
 self.addEventListener("install", function (event) {
-  console.log("Service Worker 安裝中...");
+  //console.log("Service Worker 安裝中...");
   // 跳過等待，立即激活新版本的 Service Worker
   event.waitUntil(self.skipWaiting());
 });
 
 // 註冊 activate 事件
 self.addEventListener("activate", function (event) {
-  console.log("Service Worker 已激活");
+  //console.log("Service Worker 已激活");
   // 讓新的 Service Worker 立即接管所有客戶端
   event.waitUntil(self.clients.claim());
 });
@@ -19,7 +19,7 @@ self.addEventListener("push", function (event) {
   if (!(self.Notification && self.Notification.permission === "granted")) {
     return;
   }
-  console.log("Push event received");
+  //console.log("Push event received");
   let data = {
     title: "Something Has Happened",
     message: "Here's something you might want to check out.",

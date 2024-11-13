@@ -31,7 +31,7 @@ const getLicensePlate = async () => {
   );
   const datas = await response.json();
   licensePlate.value = datas.userCarPlate;
-  console.log(licensePlate);
+  //console.log(licensePlate);
 };
 
 const loadParkingRecords = async () => {

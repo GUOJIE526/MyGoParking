@@ -52,7 +52,7 @@ export async function subscribeUserToPush() {
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
     });
-    console.log("Subscription Data:", pushSubscription.toJSON());
+    //console.log("Subscription Data:", pushSubscription.toJSON());
     // 將訂閱資料傳送到後端
     await fetch(
       "https://goparkapi.azurewebsites.net/api/Notification/subscribe",
@@ -64,7 +64,7 @@ export async function subscribeUserToPush() {
         },
       }
     );
-    console.log("User is subscribed to push notifications.");
+    //console.log("User is subscribed to push notifications.");
   } catch (err) {
     // The subscription wasn't successful.
     console.log("Error", err);

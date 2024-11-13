@@ -32,7 +32,7 @@ const newMonApply = async () => {
       lotName: lotName,
       applyDate: localDate,
     };
-    console.log(apply);
+    //console.log(apply);
     const res = await fetch(`${BASE_URL}/MonthlyRentals/newMonApplyList`, {
       method: "POST",
       headers: {
@@ -40,10 +40,10 @@ const newMonApply = async () => {
       },
       body: JSON.stringify(apply),
     });
-    console.log(res);
+    //console.log(res);
     if (res.ok) {
       const data = await res.json();
-      console.log(data);
+      //console.log(data);
       Swal.fire({
         icon: "success",
         text: data.message,
@@ -64,7 +64,7 @@ onMounted(async () => {
   if (user.userId) {
     await getUserData(user.userId, username, email, phone);
   }
-  console.log(user.userId);
+  //console.log(user.userId);
   await getUserCarPlate(cars);
 });
 </script>

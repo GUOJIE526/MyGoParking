@@ -43,8 +43,8 @@ const addCar = () => {
 };
 
 const hasChange = (origin, update) => {
-  console.log(`ORIGIN ${origin.isActive}`);
-  console.log(`UPDATE ${update.isActive}`);
+  // console.log(`ORIGIN ${origin.isActive}`);
+  // console.log(`UPDATE ${update.isActive}`);
 
   return origin.isActive != update.isActive;
 };
