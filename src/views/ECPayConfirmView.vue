@@ -28,7 +28,7 @@ onMounted(() => {
     merchantTradeNo.value = route.query.MerchantTradeNo; // 從 URL 中提取 MerchantTradeNo
 
     if (!merchantTradeNo.value) {
-        alert("無法取得交易編號，請重新操作。");
+        //alert("無法取得交易編號，請重新操作。");
         return;
     }
 
@@ -38,7 +38,7 @@ onMounted(() => {
     } else if (payType.value === 'Res') {
         handleResPayment();
     } else {
-        alert("無效的支付類型。");
+        //alert("無效的支付類型。");
     }
 });
 
@@ -51,7 +51,7 @@ function handleMonthlyPayment() {
         amount.value = storedInfo.amount;
         planLabel.value = storedInfo.planLabel;
     } else {
-        alert('無法讀取方案資料，請重新選擇方案。');
+        //alert('無法讀取方案資料，請重新選擇方案。');
         return;
     }
 
@@ -73,7 +73,7 @@ function handleResPayment() {
         amount.value = storedInfo.amount;
         planLabel.value = storedInfo.lot + "-預約金";
     } else {
-        alert('無法讀取方案資料，請重新選擇方案。');
+        //alert('無法讀取方案資料，請重新選擇方案。');
         return;
     }
 

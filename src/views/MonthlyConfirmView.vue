@@ -24,7 +24,7 @@ onMounted(() => {
         amount.value = storedInfo.amount;
         planLabel.value = storedInfo.planLabel;
     } else {
-        alert('無法讀取方案資料，請重新選擇方案。');
+        //alert('無法讀取方案資料，請重新選擇方案。');
         window.location.href = '/';
     }
 
@@ -52,19 +52,19 @@ async function confirmPayment() {
         });
 
         if (check.data.returnCode === '0000') {
-            alert('付款確認成功');
+            //alert('付款確認成功');
             paymentStatus.value = '交易狀態: 成功';
 
             // 更新付款狀態
             const response = await axios.post(`${baseApiUrl}/UpdatePaymentStatus`,
                 { orderId }, {
-                    headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
 
             //console.log('確認成功:', response.data);
         } else if (check.data.returnCode === '1172') {
-            alert('重複付款');
+            //alert('重複付款');
             paymentStatus.value = '交易狀態: 已有重複訂單';
         } else {
             paymentStatus.value = `交易狀態: ${check.data.message}`;

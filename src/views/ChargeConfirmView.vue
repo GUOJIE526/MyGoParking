@@ -27,7 +27,7 @@ onMounted(() => {
         MycouponAmount.value = storedInfo.componsAmount;
         MycarId.value = storedInfo.car;
     } else {
-        alert('無法讀取方案資料，請重新選擇方案。');
+        //alert('無法讀取方案資料，請重新選擇方案。');
         ;
     }
 
@@ -59,7 +59,7 @@ async function confirmPayment() {
             );
 
             paymentStatus.value = '交易狀態: 成功 (0 元優惠交易)';
-            alert('付款確認成功 (0 元優惠交易)');
+            //alert('付款確認成功 (0 元優惠交易)');
             setTimeout(() => (window.location.href = "/"), 3000);
             return;
         }
@@ -90,7 +90,7 @@ async function confirmPayment() {
 
 
         if (check.data.returnCode === '0000') {
-            alert('付款確認成功');
+            //alert('付款確認成功');
             const response = await axios.post(
                 `${baseApiUrl}/UpdateEntryExitPayment`,
                 payload,
@@ -102,7 +102,7 @@ async function confirmPayment() {
             paymentStatus.value = '交易狀態: 成功';
             setTimeout(() => (window.location.href = "/"), 3000);
         } else if (check.data.returnCode === '1172') {
-            alert('重複付款');
+            //alert('重複付款');
             paymentStatus.value = '交易狀態: 已有重複訂單';
             setTimeout(() => (window.location.href = "/"), 3000);
         } else {
