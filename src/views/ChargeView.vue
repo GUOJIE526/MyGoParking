@@ -174,6 +174,8 @@ async function requestPayment() {
 
     const paymentUrl = response.data.info.paymentUrl.web;
     window.location.href = paymentUrl;
+
+    console.log(response.data.info.message);
   } catch (error) {
     alert("交易失敗，請稍後再試。");
   }
