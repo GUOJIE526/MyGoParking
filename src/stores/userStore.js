@@ -40,7 +40,13 @@ export const useUserStore = defineStore(
       message.value = "";
       isRegisterSuccess.value = false;
       localStorage.removeItem("isLogin");
-      alert("已登出");
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: "已登出",
+        showConfirmButton: false,
+        timer: 1500
+      });
       router.push("/");
     };
 

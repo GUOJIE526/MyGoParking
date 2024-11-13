@@ -113,7 +113,6 @@ const updateMemberInfo = async () => {
     salt: "",
     licensePlate: userStore.licensePlate,
   };
-  console.log(renew);
   const response = await fetch(PUTT_TURL, {
     method: "PUT",
     body: JSON.stringify(renew),
@@ -121,16 +120,20 @@ const updateMemberInfo = async () => {
       "Content-Type": "application/json",
     },
   });
-  console.log(response);
   if (response.ok) {
     userStore.updateUser(renew);
-    alert("會員資料已成功更新");
+    Swal.fire({
+          title: "會員資料已成功更新",
+          icon: "sucess"
+        });
     await couponStore.addCoupon();
-    //alert(couponStore.couponMessage);
-    // console.log('mess');
     autoClose();
   } else {
-    throw new Error("會員資料更新失敗");
+    Swal.fire({
+          title: "會員資料更新失敗",
+          icon: "question"
+        });
+    //throw new Error("會員資料更新失敗");
   }
 };
 
