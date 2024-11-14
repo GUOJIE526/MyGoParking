@@ -10,12 +10,10 @@ export const useCouponStore = defineStore("couponStore", {
     async addCoupon() {
       const userStore = useUserStore();
       const g = function () {
-        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+        return (((1 + Math.random()) * 0x10000) | 0).toString(10).substring(1);
       };
       const NewGuid = function () {
-        return (
-          g() + g() + "-" + g() + "-" + g() + "-" + g() + "-" + g() + g() + g()
-        );
+        return g() + g() + "-" + g() + "-" + g() + "-" + g() + "-" + g();
       };
       try {
         const BASE_URL = import.meta.env.VITE_API_BASEURL;
@@ -24,7 +22,7 @@ export const useCouponStore = defineStore("couponStore", {
         let couponNumber = NewGuid();
         const couponData = {
           couponId: 0,
-          couponCode: `#${couponNumber}`,
+          couponCode: `${couponNumber}`,
           discountAmount: 50,
           validFrom: "2024-01-01T00:00:00",
           validUntil: "2024-12-01T00:00:00",
