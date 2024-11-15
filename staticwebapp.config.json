@@ -2,10 +2,5 @@
     "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": ["/assets/*", "/static/*"]
-  },
-  "env":{
-    "VITE_GOOGLE_MAP_API_KEY": "AIzaSyALBHIW2HQWkmhCK-VXqGIoTVttRvMTtXo",
-    "VITE_API_BASEURL" : "https://goparkapi.azurewebsites.net/api",
-    "VITE_MY_WEB_URL" : "https://www.mygoparking.com"
   }
 }
