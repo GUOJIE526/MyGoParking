@@ -7,6 +7,7 @@ import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
 // const myWebUrl = `window.location.origin`;
 const myWebUrl = import.meta.env.VITE_MY_WEB_URL;
 const baseUrl = `${import.meta.env.VITE_API_BASEURL}`;
+const mapAPI = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 
 const MylotId = ref(0);
 const MycarId = ref(0);
@@ -28,13 +29,7 @@ const lotInfo = reactive({
 // 動態計算地圖 URL
 const mapUrl = computed(
   () =>
-    `https://maps.googleapis.com/maps/api/staticmap?center=${
-      lotInfo.lotLatitude
-    },${
-      lotInfo.lotLongitude
-    }&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${
-      lotInfo.lotLatitude
-    },${lotInfo.lotLongitude}&key=${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`
+    `https://maps.googleapis.com/maps/api/staticmap?center=${lotInfo.lotLatitude},${lotInfo.lotLongitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${lotInfo.lotLatitude},${lotInfo.lotLongitude}&key=${mapAPI}`
 );
 
 onMounted(async () => {

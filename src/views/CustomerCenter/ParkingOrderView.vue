@@ -5,6 +5,7 @@ import { useUserStore } from "@/stores/userStore"; //要取Pinia
 import Swal from "sweetalert2";
 
 const API_URL = `${import.meta.env.VITE_API_BASEURL}`;
+const mapApi = `${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`;
 const userStore = useUserStore();
 const userId = userStore.userId;
 
@@ -289,15 +290,7 @@ onMounted(() => {
             <div class="col-md-6 p-2 img-container">
               <img
                 class="rounded img-fluid"
-                :src="`https://maps.googleapis.com/maps/api/staticmap?center=${
-                  ongoing.latitude
-                },${
-                  ongoing.longitude
-                }&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${
-                  ongoing.latitude
-                },${ongoing.longitude}&key=${
-                  import.meta.env.VITE_GOOGLE_MAP_API
-                }`"
+                :src="`https://maps.googleapis.com/maps/api/staticmap?center=${ongoing.latitude},${ongoing.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${ongoing.latitude},${ongoing.longitude}&key=${mapApi}`"
                 alt="Map of {{ ongoing.lotName }}"
                 style="width: 100%; height: 100%"
               />
@@ -362,15 +355,7 @@ onMounted(() => {
             <div class="col-md-6 p-2 img-container">
               <img
                 class="rounded img-fluid"
-                :src="`https://maps.googleapis.com/maps/api/staticmap?center=${
-                  complete.latitude
-                },${
-                  complete.longitude
-                }&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${
-                  complete.latitude
-                },${complete.longitude}&key=${
-                  import.meta.env.VITE_GOOGLE_MAP_API_KEY
-                }`"
+                :src="`https://maps.googleapis.com/maps/api/staticmap?center=${complete.latitude},${complete.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${complete.latitude},${complete.longitude}&key=${mapApi}`"
                 alt="Map of {{ complete.lotName }}"
                 style="width: 100%; height: 100%"
               />

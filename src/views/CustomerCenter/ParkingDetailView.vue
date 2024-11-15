@@ -3,6 +3,7 @@ import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const API_URL = `${import.meta.env.VITE_API_BASEURL}`;
+const mapAPI = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 const route = useRoute();
 const id = route.params.id; //獲取路由的id
 const parkingInfo = ref({});
@@ -35,15 +36,7 @@ loadParkingDetail();
       <div class="col-12 col-md-7 mb-2">
         <img
           class="img-fluid mb-2"
-          :src="`https://maps.googleapis.com/maps/api/staticmap?center=${
-            parkingInfo.latitude
-          },${
-            parkingInfo.longitude
-          }&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${
-            parkingInfo.latitude
-          },${parkingInfo.longitude}&key=${
-            import.meta.env.VITE_GOOGLE_MAP_API_KEY
-          }`"
+          :src="`https://maps.googleapis.com/maps/api/staticmap?center=${parkingInfo.latitude},${parkingInfo.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${parkingInfo.latitude},${parkingInfo.longitude}&key=${mapAPI}`"
           alt="Map of {{ parkingInfo.lotName }}"
           style=""
         />
