@@ -28,7 +28,13 @@ const lotInfo = reactive({
 // 動態計算地圖 URL
 const mapUrl = computed(
   () =>
-    `https://maps.googleapis.com/maps/api/staticmap?center=${lotInfo.lotLatitude},${lotInfo.lotLongitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${lotInfo.lotLatitude},${lotInfo.lotLongitude}&key=AIzaSyALBHIW2HQWkmhCK-VXqGIoTVttRvMTtXo`
+    `https://maps.googleapis.com/maps/api/staticmap?center=${
+      lotInfo.lotLatitude
+    },${
+      lotInfo.lotLongitude
+    }&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${
+      lotInfo.lotLatitude
+    },${lotInfo.lotLongitude}&key=${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`
 );
 
 onMounted(async () => {

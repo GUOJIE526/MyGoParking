@@ -35,7 +35,15 @@ loadParkingDetail();
       <div class="col-12 col-md-7 mb-2">
         <img
           class="img-fluid mb-2"
-          :src="`https://maps.googleapis.com/maps/api/staticmap?center=${parkingInfo.latitude},${parkingInfo.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${parkingInfo.latitude},${parkingInfo.longitude}&key=AIzaSyALBHIW2HQWkmhCK-VXqGIoTVttRvMTtXo`"
+          :src="`https://maps.googleapis.com/maps/api/staticmap?center=${
+            parkingInfo.latitude
+          },${
+            parkingInfo.longitude
+          }&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${
+            parkingInfo.latitude
+          },${parkingInfo.longitude}&key=${
+            import.meta.env.VITE_GOOGLE_MAP_API_KEY
+          }`"
           alt="Map of {{ parkingInfo.lotName }}"
           style=""
         />

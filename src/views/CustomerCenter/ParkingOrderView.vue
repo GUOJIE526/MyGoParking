@@ -289,7 +289,15 @@ onMounted(() => {
             <div class="col-md-6 p-2 img-container">
               <img
                 class="rounded img-fluid"
-                :src="`https://maps.googleapis.com/maps/api/staticmap?center=${ongoing.latitude},${ongoing.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${ongoing.latitude},${ongoing.longitude}&key=AIzaSyALBHIW2HQWkmhCK-VXqGIoTVttRvMTtXo`"
+                :src="`https://maps.googleapis.com/maps/api/staticmap?center=${
+                  ongoing.latitude
+                },${
+                  ongoing.longitude
+                }&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${
+                  ongoing.latitude
+                },${ongoing.longitude}&key=${
+                  import.meta.env.VITE_GOOGLE_MAP_API
+                }`"
                 alt="Map of {{ ongoing.lotName }}"
                 style="width: 100%; height: 100%"
               />
@@ -354,7 +362,15 @@ onMounted(() => {
             <div class="col-md-6 p-2 img-container">
               <img
                 class="rounded img-fluid"
-                :src="`https://maps.googleapis.com/maps/api/staticmap?center=${complete.latitude},${complete.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${complete.latitude},${complete.longitude}&key=AIzaSyALBHIW2HQWkmhCK-VXqGIoTVttRvMTtXo`"
+                :src="`https://maps.googleapis.com/maps/api/staticmap?center=${
+                  complete.latitude
+                },${
+                  complete.longitude
+                }&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${
+                  complete.latitude
+                },${complete.longitude}&key=${
+                  import.meta.env.VITE_GOOGLE_MAP_API_KEY
+                }`"
                 alt="Map of {{ complete.lotName }}"
                 style="width: 100%; height: 100%"
               />
