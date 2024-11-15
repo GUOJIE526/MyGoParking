@@ -104,7 +104,7 @@ const resetPassword = async () => {
     <!-- 麵包屑 -->
     <BreadcrumbsComponent>
       <template #title>
-        <h2>Sign In</h2>
+        <h2>Reset Password</h2>
       </template>
       <template #page> 忘記密碼 </template>
     </BreadcrumbsComponent>
