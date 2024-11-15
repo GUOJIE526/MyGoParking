@@ -3,6 +3,7 @@ import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import router from "@/router";
+import Swal from "sweetalert2";
 
 const BASE_URL = import.meta.env.VITE_API_BASEURL;
 const API_URL = `${BASE_URL}/Customers/sign`;

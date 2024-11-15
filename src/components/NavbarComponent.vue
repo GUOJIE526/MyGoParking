@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import { ref, watch } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import { useCouponStore } from "@/stores/couponStore";
+import Swal from "sweetalert2";
 
 const router = useRouter();
 const TIMEOUT_DURATION = 30 * 60 * 1000; // 30 分鐘
@@ -123,16 +124,16 @@ const updateMemberInfo = async () => {
   if (response.ok) {
     userStore.updateUser(renew);
     Swal.fire({
-          title: "會員資料已成功更新",
-          icon: "sucess"
-        });
+      title: "會員資料已成功更新",
+      icon: "success"
+    });
     await couponStore.addCoupon();
     autoClose();
   } else {
     Swal.fire({
-          title: "會員資料更新失敗",
-          icon: "question"
-        });
+      title: "會員資料更新失敗",
+      icon: "question"
+    });
     //throw new Error("會員資料更新失敗");
   }
 };
@@ -145,50 +146,25 @@ const submitMemberInfo = async () => {
 <template>
   <!-- ======= Header ======= -->
   <header id="header" class="header d-flex align-items-center">
-    <div
-      id="test"
-      class="container-fluid container-xl d-flex align-items-center justify-content-between"
-    >
+    <div id="test" class="container-fluid container-xl d-flex align-items-center justify-content-between">
       <div style="display: inline-flex">
-        <RouterLink
-          class="nav-link logo d-flex align-items-center"
-          activeClass="active"
-          to="/"
-        >
+        <RouterLink class="nav-link logo d-flex align-items-center" activeClass="active" to="/">
           <!-- Uncomment the line below if you also wish to use an image logo -->
           <!-- <img src="assets/img/logo.png" alt=""> -->
           <h1><img src="../images/logo_mygo.png" alt="" /><span></span></h1>
         </RouterLink>
-        <div
-          class="nav_search_bar"
-          :class="{
-            nav_search_bar_animation_forwards: isSearch_barOpen,
-            nav_search_bar_animation_reverse: !isSearch_barOpen,
-          }"
-        >
-          <a
-            id="nav_search_bar_icon"
-            href=""
-            @click.prevent="enable_Search_bar"
-            :class="{ nav_search_bar_icon_animation: isSearch_barOpen }"
-            ><i
-              id="nav_search_bar_icon_size"
-              class="fa-solid fa-magnifying-glass fa-beat"
-            ></i
-          ></a>
-          <input
-            v-model="searchQuery"
-            @blur="handleBlur"
-            @keydown.enter.prevent="enable_Search_bar"
-            type="text"
-            ref="searchInput"
-            class="nav_search_bar_input"
-            :class="{
+        <div class="nav_search_bar" :class="{
+          nav_search_bar_animation_forwards: isSearch_barOpen,
+          nav_search_bar_animation_reverse: !isSearch_barOpen,
+        }">
+          <a id="nav_search_bar_icon" href="" @click.prevent="enable_Search_bar"
+            :class="{ nav_search_bar_icon_animation: isSearch_barOpen }"><i id="nav_search_bar_icon_size"
+              class="fa-solid fa-magnifying-glass fa-beat"></i></a>
+          <input v-model="searchQuery" @blur="handleBlur" @keydown.enter.prevent="enable_Search_bar" type="text"
+            ref="searchInput" class="nav_search_bar_input" :class="{
               nav_search_bar_input_animation_forwards: isSearch_barOpen,
               nav_search_bar_animation_reverse: !isSearch_barOpen,
-            }"
-            placeholder="搜尋停車場"
-          />
+            }" placeholder="搜尋停車場" />
         </div>
       </div>
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
@@ -196,9 +172,7 @@ const submitMemberInfo = async () => {
       <nav id="navbar" class="navbar">
         <ul>
           <li v-if="userStore.isLogin">
-            <RouterLink class="nav-link" activeClass="active" to="/"
-              >Home</RouterLink
-            >
+            <RouterLink class="nav-link" activeClass="active" to="/">Home</RouterLink>
           </li>
           <!-- <li>
               <RouterLink
@@ -209,106 +183,46 @@ const submitMemberInfo = async () => {
               >
             </li> -->
           <li v-if="userStore.isLogin">
-            <RouterLink
-              class="nav-link"
-              activeClass="active"
-              :to="{ name: 'guide' }"
-              >使用者教學及規範</RouterLink
-            >
+            <RouterLink class="nav-link" activeClass="active" :to="{ name: 'guide' }">使用者教學及規範</RouterLink>
           </li>
           <li v-if="userStore.isLogin">
-            <RouterLink
-              class="nav-link"
-              activeClass="active"
-              :to="{ name: 'service' }"
-              >客服中心</RouterLink
-            >
+            <RouterLink class="nav-link" activeClass="active" :to="{ name: 'service' }">客服中心</RouterLink>
           </li>
           <!-- 用戶中心選單 -->
           <li v-if="userStore.isLogin" class="dropdown">
-            <RouterLink
-              class="nav-link"
-              activeClass="active"
-              to="/CustomerCenter"
-              ><span
-                ><i class="fa-solid fa-bell fa-beat"></i><i> </i>用戶中心</span
-              >
-              <i class="bi bi-chevron-down dropdown-indicator"></i
-            ></RouterLink>
+            <RouterLink class="nav-link" activeClass="active" to="/CustomerCenter"><span><i
+                  class="fa-solid fa-bell fa-beat"></i><i> </i>用戶中心</span>
+              <i class="bi bi-chevron-down dropdown-indicator"></i>
+            </RouterLink>
             <ul>
               <li>
-                <RouterLink
-                  class="nav-link"
-                  activeClass="active"
-                  :to="{ name: 'edit-profile' }"
-                  >用戶基本資訊</RouterLink
-                >
+                <RouterLink class="nav-link" activeClass="active" :to="{ name: 'edit-profile' }">用戶基本資訊</RouterLink>
               </li>
               <li>
-                <RouterLink
-                  class="nav-link"
-                  activeClass="active"
-                  :to="{ name: 'set-plate' }"
-                  >車牌設定</RouterLink
-                >
+                <RouterLink class="nav-link" activeClass="active" :to="{ name: 'set-plate' }">車牌設定</RouterLink>
               </li>
               <li>
-                <RouterLink
-                  class="nav-link"
-                  activeClass="active"
-                  :to="{ name: 'parking-order' }"
-                  >預訂紀錄</RouterLink
-                >
+                <RouterLink class="nav-link" activeClass="active" :to="{ name: 'parking-order' }">預訂紀錄</RouterLink>
               </li>
               <li>
-                <RouterLink
-                  class="nav-link"
-                  activeClass="active"
-                  :to="{ name: 'parking-record' }"
-                  >停車紀錄</RouterLink
-                >
+                <RouterLink class="nav-link" activeClass="active" :to="{ name: 'parking-record' }">停車紀錄</RouterLink>
               </li>
               <li>
-                <RouterLink
-                  class="nav-link"
-                  activeClass="active"
-                  :to="{ name: 'monthlyRental' }"
-                  >月租中心</RouterLink
-                >
+                <RouterLink class="nav-link" activeClass="active" :to="{ name: 'monthlyRental' }">月租中心</RouterLink>
               </li>
               <li>
-                <RouterLink
-                  class="nav-link"
-                  activeClass="active"
-                  :to="{ name: 'coupon' }"
-                  >優惠券專區</RouterLink
-                >
+                <RouterLink class="nav-link" activeClass="active" :to="{ name: 'coupon' }">優惠券專區</RouterLink>
               </li>
             </ul>
           </li>
           <li>
-            <RouterLink
-              class="nav-link"
-              activeClass="active"
-              :to="{ name: 'ChargeView' }"
-              >繳費</RouterLink
-            >
+            <RouterLink class="nav-link" activeClass="active" :to="{ name: 'ChargeView' }">繳費</RouterLink>
           </li>
           <li v-if="!userStore.isLogin">
-            <RouterLink
-              class="nav-link"
-              activeClass="active"
-              :to="{ name: 'signUp' }"
-              >註冊</RouterLink
-            >
+            <RouterLink class="nav-link" activeClass="active" :to="{ name: 'signUp' }">註冊</RouterLink>
           </li>
           <li v-if="!userStore.isLogin">
-            <RouterLink
-              class="nav-link"
-              activeClass="active"
-              :to="{ name: 'signIn' }"
-              >登入</RouterLink
-            >
+            <RouterLink class="nav-link" activeClass="active" :to="{ name: 'signIn' }">登入</RouterLink>
           </li>
           <li v-if="userStore.isLogin">
             <button class="button-17 ms-3 my-3" @click="logout">登出</button>
@@ -321,24 +235,12 @@ const submitMemberInfo = async () => {
   <!-- End Header -->
   <!-- modal -->
   <!-- 隱藏的按鈕，點擊後顯示 Modal -->
-  <button
-    ref="hiddenButton"
-    type="button"
-    style="display: none"
-    data-bs-toggle="modal"
-    data-bs-target="#exampleModal"
-    data-bs-whatever="@mdo"
-  >
+  <button ref="hiddenButton" type="button" style="display: none" data-bs-toggle="modal" data-bs-target="#exampleModal"
+    data-bs-whatever="@mdo">
     Open Modal
   </button>
 
-  <div
-    class="modal fade"
-    id="exampleModal"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -346,37 +248,19 @@ const submitMemberInfo = async () => {
             註冊成功!
             <p>填寫完整會員資訊即可取得三張優惠券!</p>
           </h5>
-          <button
-            ref="closeForm"
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button ref="closeForm" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form>
             <div class="mb-3">
               <label for="recipient-name" class="col-form-label">姓名:</label>
-              <input
-                name="name"
-                type="text"
-                class="form-control"
-                id="recipient-name"
-                v-model="name"
-                placeholder="請輸入姓名"
-              />
+              <input name="name" type="text" class="form-control" id="recipient-name" v-model="name"
+                placeholder="請輸入姓名" />
             </div>
             <div class="mb-3">
               <label for="message-text" class="col-form-label">電話:</label>
-              <input
-                name="phone"
-                type="text"
-                class="form-control"
-                id="recipient-phone"
-                v-model="phone"
-                placeholder="請輸入電話"
-              />
+              <input name="phone" type="text" class="form-control" id="recipient-phone" v-model="phone"
+                placeholder="請輸入電話" />
             </div>
           </form>
         </div>
@@ -385,8 +269,7 @@ const submitMemberInfo = async () => {
             稍後再填
           </button>
           <button type="button" class="button-17" @click="submitMemberInfo">
-            <i class="fa-solid fa-gift me-2" style="color: #f3c212"></i
-            >送出並領取優惠券
+            <i class="fa-solid fa-gift me-2" style="color: #f3c212"></i>送出並領取優惠券
           </button>
         </div>
       </div>
@@ -445,6 +328,7 @@ const submitMemberInfo = async () => {
   0% {
     transform: translateX(0px);
   }
+
   100% {
     transform: translateX(15vmin);
   }
