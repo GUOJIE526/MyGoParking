@@ -2,5 +2,8 @@
     "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": ["/assets/*", "/static/*"]
+  },
+  "env":{
+    "VITE_GOOGLE_MAP_API_KEY": "AIzaSyALBHIW2HQWkmhCK-VXqGIoTVttRvMTtXo"
   }
 }
