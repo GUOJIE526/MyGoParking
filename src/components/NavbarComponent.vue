@@ -5,6 +5,7 @@ import { ref, watch } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import { useCouponStore } from "@/stores/couponStore";
 import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 
 const router = useRouter();
 const TIMEOUT_DURATION = 30 * 60 * 1000; // 30 分鐘
@@ -234,8 +235,8 @@ const submitMemberInfo = async () => {
               ><span
                 ><i class="fa-solid fa-bell fa-beat"></i><i> </i>用戶中心</span
               >
-              <i class="bi bi-chevron-down dropdown-indicator"></i
-            ></RouterLink>
+              <i class="bi bi-chevron-down dropdown-indicator"></i>
+            </RouterLink>
             <ul>
               <li>
                 <RouterLink
@@ -446,6 +447,7 @@ const submitMemberInfo = async () => {
   0% {
     transform: translateX(0px);
   }
+
   100% {
     transform: translateX(15vmin);
   }

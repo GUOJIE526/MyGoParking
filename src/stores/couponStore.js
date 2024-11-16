@@ -9,33 +9,18 @@ export const useCouponStore = defineStore("couponStore", {
   actions: {
     async addCoupon() {
       const userStore = useUserStore();
-      const g = function () {
-        return (((1 + Math.random()) * 0x10000) | 0).toString(10).substring(1);
-      };
-      const NewGuid = function () {
-        return g() + g() + "-" + g() + "-" + g() + "-" + g() + "-" + g();
-      };
+      // let couponNumber = NewGuid();
       try {
         const BASE_URL = import.meta.env.VITE_API_BASEURL;
         const ADD_URL = `${BASE_URL}/Customers/coupon`;
-
-        let couponNumber = NewGuid();
-        const couponData = {
-          couponId: 0,
-          couponCode: `${couponNumber}` + `#${userStore.userId}`,
-          discountAmount: 50,
-          validFrom: "2024-01-01T00:00:00",
-          validUntil: "2024-12-01T00:00:00",
-          isUsed: false,
-          userId: userStore.userId,
-        };
+        const userid = userStore.userId;
 
         const response = await fetch(ADD_URL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(couponData),
+          body: JSON.stringify(userid),
         });
         const result = await response.json();
         if (response.ok) {
