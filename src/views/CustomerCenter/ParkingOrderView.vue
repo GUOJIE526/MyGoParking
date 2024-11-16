@@ -354,7 +354,7 @@ onMounted(() => {
             <div class="col-md-6 p-2 img-container">
               <img
                 class="rounded img-fluid"
-                :src="`${API_URL}/Customers/MapApiKey?Lat=${ongoing.latitude}&lng=${ongoing.longitude}`"
+                :src="`${API_URL}/Customers/MapApiKey?Lat=${complete.latitude}&lng=${complete.longitude}`"
                 alt="Map of {{ complete.lotName }}"
                 style="width: 100%; height: 100%"
               />
