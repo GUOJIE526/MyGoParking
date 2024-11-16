@@ -197,9 +197,9 @@ const redirectSignUp = () => {
     </section>
     <section class="panel title"><!--title--></section>
     <section class="panel panel_search">search</section>
-    <section class="panel panel_test panel_search_follow">test</section>
+    <section class="panel panel_test panel_search_follow">&emsp;</section>
     <section class="panel panel_reserve">reserve</section>
-    <section class="panel panel_test panel_reserve_follow">test</section>
+    <section class="panel panel_test panel_reserve_follow">&emsp;</section>
   </div>
 </template>
 
@@ -277,7 +277,7 @@ const redirectSignUp = () => {
   align-items: center;
 }
 
-@media (max-width: 850px) {
+@media (max-width: 1140px) {
   .phone {
     width: 100vw;
     /* border:10px solid black; */
@@ -291,9 +291,19 @@ const redirectSignUp = () => {
   }
 
   .function {
+    /* padding-left: 5%; */
+    /* padding-right: 5%; */
     justify-content: center;
     align-content: center;
     flex-wrap: nowrap;
+  }
+
+  .function>img{
+    scale: 0.9;
+  }
+
+  .input-group{
+    scale: 0.8;
   }
 
   .function_desc {
@@ -332,6 +342,9 @@ const redirectSignUp = () => {
   right: 0;
   z-index: 3000;
   opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .chat img {
@@ -341,16 +354,11 @@ const redirectSignUp = () => {
 
 .story {
   position: absolute;
-  top: 50%;
-  /* 將文字置於垂直中間 */
-  left: 50%;
-  /* 將文字置於水平中間 */
-  transform: translate(-65%, -75%);
-  /* 平移使文字居中 */
+  /* top: 50%; */
+  /* left: 50%; */
+  transform: translate(-12%, 0);
   color: black;
-  /* 設定文字顏色，使其在圖片上清晰可見 */
   font-size: 4vmin;
-  /* 根據需求調整文字大小 */
   text-align: center;
 }
 
@@ -381,6 +389,12 @@ const redirectSignUp = () => {
 #stars g {
   width: 100vw;
   animation: twinkle 3s infinite;
+}
+
+@media (max-width: 850px){
+  #star g{
+    animation: none;
+  }
 }
 
 @keyframes twinkle {
@@ -529,7 +543,7 @@ const redirectSignUp = () => {
 
 .panel_test {
   height: 100vh;
-  /* background-color: sienna; */
+  background-color:rgba(0,0,0,0.8);
   padding: 0;
   /* animation: sky 10s infinite; */
 }
@@ -626,6 +640,12 @@ const redirectSignUp = () => {
 
 #car {
   animation: shakeCar 0.5s ease-in-out infinite;
+}
+
+@media (max-width: 850px){
+  #car{
+    animation: none;
+  }
 }
 
 @keyframes moveCar {
