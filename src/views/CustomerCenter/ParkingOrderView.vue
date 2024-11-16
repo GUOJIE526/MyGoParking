@@ -22,11 +22,6 @@ const countCancel = ref(0); //上方顯示已取消預訂數字
 const countOverdue = ref(0); //上方顯示逾時預訂數字(違規)
 const isNoData = ref();
 
-//透過後端代理接收地圖API的key
-const mapUrl = computed(() => {
-  return ``;
-});
-
 const loadReservations = async () => {
   const response = await fetch(`${API_URL}/Reservations?userId=${userId}`);
   const datas = await response.json();
