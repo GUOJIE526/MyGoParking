@@ -195,9 +195,9 @@ const redirectSignUp = () => {
     </section>
     <section class="panel title"><!--title--></section>
     <section class="panel panel_search">search</section>
-    <section class="panel panel_test panel_search_follow">test</section>
+    <section class="panel panel_test panel_search_follow">&emsp;</section>
     <section class="panel panel_reserve">reserve</section>
-    <section class="panel panel_test panel_reserve_follow">test</section>
+    <section class="panel panel_test panel_reserve_follow">&emsp;</section>
   </div>
 </template>
 
@@ -541,7 +541,7 @@ const redirectSignUp = () => {
 
 .panel_test {
   height: 100vh;
-  /* background-color: sienna; */
+  background-color:rgba(0,0,0,0.8);
   padding: 0;
   /* animation: sky 10s infinite; */
 }
