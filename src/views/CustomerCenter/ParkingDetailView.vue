@@ -3,10 +3,20 @@ import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const API_URL = `${import.meta.env.VITE_API_BASEURL}`;
-const mapAPI = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 const route = useRoute();
 const id = route.params.id; //獲取路由的id
 const parkingInfo = ref({});
+const MapApiKey = ref(""); //地圖API key
+
+//取得地圖API key
+const getMapApiKey = async () => {
+  const response = await fetch(`${API_URL}/Customers/MapApiKey`);
+  if (!response.ok) {
+    console.error("API 呼叫錯誤:", error);
+  }
+  const data = await response.json();
+  MapApiKey.value = data.apiKey;
+};
 
 const loadParkingDetail = async () => {
   const response = await fetch(`${API_URL}/EntryExitManagements/${id}`);
@@ -24,7 +34,10 @@ const formatTime = (time) => {
   return `${year}-${month}-${day}   ${hour}:${minute}`;
 };
 
-loadParkingDetail();
+onMounted(() => {
+  getMapApiKey();
+  loadParkingDetail();
+});
 </script>
 
 <template>
@@ -36,7 +49,7 @@ loadParkingDetail();
       <div class="col-12 col-md-7 mb-2">
         <img
           class="img-fluid mb-2"
-          :src="`https://maps.googleapis.com/maps/api/staticmap?center=${parkingInfo.latitude},${parkingInfo.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${parkingInfo.latitude},${parkingInfo.longitude}&key=${mapAPI}`"
+          :src="`https://maps.googleapis.com/maps/api/staticmap?center=${parkingInfo.latitude},${parkingInfo.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${parkingInfo.latitude},${parkingInfo.longitude}&key=${MapApiKey}`"
           alt="Map of {{ parkingInfo.lotName }}"
           style=""
         />

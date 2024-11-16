@@ -5,10 +5,10 @@ import { useUserStore } from "@/stores/userStore"; //要取Pinia
 import Swal from "sweetalert2";
 
 const API_URL = `${import.meta.env.VITE_API_BASEURL}`;
-const mapApi = `${import.meta.env.VITE_GOOGLE_MAP_API_KEY}`;
 const userStore = useUserStore();
 const userId = userStore.userId;
 
+const MapApiKey = ref(""); //地圖API key
 const reservations = ref([]); //傳回的預訂資料放此
 const search = ref(""); //搜尋關鍵字
 const period = ref("all"); //選擇篩選區段
@@ -39,6 +39,16 @@ const loadReservations = async () => {
   if (ongoingRes.value.length == 0) {
     isNoData.value = true; //判斷有無資料顯示佔位符
   }
+};
+
+//取得地圖API key
+const getMapApiKey = async () => {
+  const response = await fetch(`${API_URL}/Customers/MapApiKey`);
+  if (!response.ok) {
+    console.error("API 呼叫錯誤:", error);
+  }
+  const data = await response.json();
+  MapApiKey.value = data.apiKey;
 };
 
 //切換觀看不同狀態的預訂紀錄
@@ -167,6 +177,7 @@ const cancelRes = async (id) => {
 
 onMounted(() => {
   loadReservations();
+  getMapApiKey();
 });
 </script>
 
@@ -290,7 +301,7 @@ onMounted(() => {
             <div class="col-md-6 p-2 img-container">
               <img
                 class="rounded img-fluid"
-                :src="`https://maps.googleapis.com/maps/api/staticmap?center=${ongoing.latitude},${ongoing.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${ongoing.latitude},${ongoing.longitude}&key=${mapApi}`"
+                :src="`https://maps.googleapis.com/maps/api/staticmap?center=${ongoing.latitude},${ongoing.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${ongoing.latitude},${ongoing.longitude}&key=${MapApiKey}`"
                 alt="Map of {{ ongoing.lotName }}"
                 style="width: 100%; height: 100%"
               />
@@ -355,7 +366,7 @@ onMounted(() => {
             <div class="col-md-6 p-2 img-container">
               <img
                 class="rounded img-fluid"
-                :src="`https://maps.googleapis.com/maps/api/staticmap?center=${complete.latitude},${complete.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${complete.latitude},${complete.longitude}&key=${mapApi}`"
+                :src="`https://maps.googleapis.com/maps/api/staticmap?center=${complete.latitude},${complete.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${complete.latitude},${complete.longitude}&key=${MapApiKey}`"
                 alt="Map of {{ complete.lotName }}"
                 style="width: 100%; height: 100%"
               />
