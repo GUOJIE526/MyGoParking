@@ -18,7 +18,6 @@ const choseDates = ref(null);
 const search = ref(""); //搜尋行政區
 const rentFee = ref([0, 5000]);
 const isLoaded = ref(false);
-const MapApiKey = ref(""); //地圖API key
 
 //分頁控制屬性
 const currentPage = ref(1); // 當前頁數
@@ -29,16 +28,6 @@ const totalRecords = ref(0); // 總資料數
 const isPhoneSize = ref(false);
 const isSmallScreen = ref(false);
 const isMiddleScreen = ref(false);
-
-//取得地圖API key
-const getMapApiKey = async () => {
-  const response = await fetch(`${API_URL}/Customers/MapApiKey`);
-  if (!response.ok) {
-    console.error("API 呼叫錯誤:", error);
-  }
-  const data = await response.json();
-  MapApiKey.value = data.apiKey;
-};
 
 //取得用戶的車牌
 const getLicensePlate = async () => {
@@ -182,7 +171,6 @@ const checkScreenSize = () => {
 loadMonthlyRental();
 onMounted(() => {
   getLicensePlate();
-  getMapApiKey();
 });
 </script>
 
@@ -325,7 +313,7 @@ onMounted(() => {
               <div class="col-md-6 mb-2">
                 <img
                   class="rounded img-fluid"
-                  :src="`https://maps.googleapis.com/maps/api/staticmap?center=${currentRental[0].latitude},${currentRental[0].longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${currentRental[0].latitude},${currentRental[0].longitude}&key=${MapApiKey}`"
+                  :src="`${API_URL}/Customers/MapApiKey?Lat=${currentRental[0].latitude}&lng=${currentRental[0].longitude}`"
                   alt="Map of {{ currentRental[0].lotName }}"
                   style="width: 100%; height: 100%"
                 />
@@ -435,7 +423,7 @@ onMounted(() => {
               <div class="col-md-6 mb-2">
                 <img
                   class="rounded img-fluid"
-                  :src="`https://maps.googleapis.com/maps/api/staticmap?center=${current.latitude},${current.longitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${current.latitude},${current.longitude}&key=${MapApiKey}`"
+                  :src="`${API_URL}/Customers/MapApiKey?Lat=${current.latitude}&lng=${current.longitude}`"
                   alt="Map of {{ current.lotName }}"
                   style="width: 100%; height: 100%"
                 />

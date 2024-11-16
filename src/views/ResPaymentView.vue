@@ -8,7 +8,6 @@ import BreadcrumbsComponent from "@/components/BreadcrumbsComponent.vue";
 const myWebUrl = import.meta.env.VITE_MY_WEB_URL;
 const baseUrl = `${import.meta.env.VITE_API_BASEURL}`;
 
-const MapApiKey = ref(""); //地圖API key
 const MylotId = ref(0);
 const MycarId = ref(0);
 const MyAmount = ref(0);
@@ -26,24 +25,12 @@ const lotInfo = reactive({
   lotResDeposit: 0,
 });
 
-//取得地圖API key
-const getMapApiKey = async () => {
-  const response = await fetch(`${API_URL}/Customers/MapApiKey`);
-  if (!response.ok) {
-    console.error("API 呼叫錯誤:", error);
-  }
-  const data = await response.json();
-  MapApiKey.value = data.apiKey;
-};
-
 // 動態計算地圖 URL
-const mapUrl = computed(
-  () =>
-    `https://maps.googleapis.com/maps/api/staticmap?center=${lotInfo.lotLatitude},${lotInfo.lotLongitude}&zoom=18&size=600x300&markers=color:red%7Clabel:P%7C${lotInfo.lotLatitude},${lotInfo.lotLongitude}&key=${MapApiKey.value}`
-);
+const mapUrl = computed(() => {
+  return `${baseUrl}/Customers/MapApiKey?Lat=${lotInfo.lotLatitude}&lng=${lotInfo.lotLongitude}`;
+});
 
 onMounted(async () => {
-  await getMapApiKey();
   try {
     MycarId.value = Number(sessionStorage.getItem("carId")) || 0;
     //console.log("c=" + MycarId.value);
