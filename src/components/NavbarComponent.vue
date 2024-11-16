@@ -5,7 +5,6 @@ import { ref, watch } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import { useCouponStore } from "@/stores/couponStore";
 import Swal from "sweetalert2";
-import Swal from "sweetalert2";
 
 const router = useRouter();
 const TIMEOUT_DURATION = 30 * 60 * 1000; // 30 分鐘
