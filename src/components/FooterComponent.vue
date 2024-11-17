@@ -311,7 +311,7 @@ onMounted(() => {
               <p>
                 801高雄市前金區中正四路211號8號樓之1<br /><br />
                 <strong>Phone:</strong> 07 969 9885<br />
-                <strong>Email:</strong> example@example.com<br />
+                <strong>Email:</strong> Mygoparking_Service@gmail.com<br />
               </p>
               <div class="social-links d-flex mt-3">
                 <a
@@ -394,7 +394,11 @@ onMounted(() => {
             <h4>聯絡我們</h4>
             <ul>
               <li><a href="#" @click.prevent="reply">意見回復</a></li>
-              <li><a href="#" @click.prevent="redirected('/Customer-Service')">客服功能</a></li>
+              <li>
+                <a href="#" @click.prevent="redirected('/Customer-Service')"
+                  >客服功能</a
+                >
+              </li>
             </ul>
           </div>
           <!-- End footer links column-->
@@ -459,9 +463,9 @@ onMounted(() => {
   transition: transform ease-out 200ms;
   pointer-events: auto;
 }
-.menu-item>svg{
+.menu-item > svg {
   position: absolute;
-  transform: translate(-50%,70%);
+  transform: translate(-50%, 70%);
 }
 
 @media (hover: none) and (pointer: coarse) {
