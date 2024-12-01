@@ -88,7 +88,7 @@ const ResMon = (lot) => {
 };
 
 const isValidSearchQuery = (query) => {
-  const reg = /^[a-zA-Z\u4e00-\u9fa5\s]+$/u;
+  const reg = /^[a-zA-Z0-9\u4e00-\u9fa5\s]+$/u;
   return reg.test(query);
 };
 
