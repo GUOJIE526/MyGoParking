@@ -108,6 +108,9 @@ const SearchHandler = async (searchQuery) => {
       if (!res.ok) {
         throw new Error("Server無法獲取數據");
       }
+      if (res.status === 404) {
+        throw new Error("請輸入關鍵字而非地址!!");
+      }
       const data = await res.json();
       if (data.latitude && data.longitude) {
         const lat = parseFloat(data.latitude);
