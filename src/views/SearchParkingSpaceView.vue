@@ -26,36 +26,58 @@ const displayedParkingLots = ref([]); // 儲存顯示的10個停車場
 const isLoading = ref(false);
 const markerMap = ref(new Map()); // 用於存儲每個停車場的標記
 
-// 使用的定位圖標
-var locationIcon = L.icon({
+// 將地圖相關的配置抽離成常量
+const MAP_CONFIG = {
+  center: [22.6273, 120.3014], // 高雄經緯度
+  zoom: 15,
+  options: {
+    zoomControl: true,
+    zoom: 1,
+    zoomAnimation: true,
+    fadeAnimation: true,
+    markerZoomAnimation: false,
+    scrollWheelZoom: true,
+  },
+};
+
+// 優化定位圖標配置
+const LOCATION_ICON = L.icon({
   iconUrl: "/location.gif",
   iconSize: [50, 65],
   iconAnchor: [19, 35],
   popupAnchor: [0, -35],
 });
 
+// 優化定位控制配置
+const LOCATE_CONTROL_CONFIG = {
+  position: "topleft",
+  flyTo: true,
+  locateOptions: {
+    maxZoom: 16,
+    watch: true,
+    setView: true,
+    enableHighAccuracy: true,
+  },
+  strings: {
+    title: "定位我的位置",
+    metersUnit: "公尺",
+    feetUnit: "英尺",
+    popup: "距離誤差：{distance}{unit}以內",
+  },
+  clickBehavior: {
+    inView: "setView",
+    outOfView: "setView",
+    inViewNotFollowing: "inView",
+  },
+};
+
+// 優化定位方法
 const locatePlace = () => {
-  L.control
+  if (!map.value) return;
+
+  const control = L.control
     .locate({
-      position: "topleft",
-      flyTo: true,
-      locateOptions: {
-        maxZoom: 16,
-        watch: true,
-        setView: true,
-        enableHighAccuracy: true,
-      },
-      strings: {
-        title: "定位我的位置",
-        metersUnit: "公尺",
-        feetUnit: "英尺",
-        popup: "距離誤差：{distance}{unit}以內",
-      },
-      clickBehavior: {
-        inView: "setView",
-        outOfView: "setView",
-        inViewNotFollowing: "inView",
-      },
+      ...LOCATE_CONTROL_CONFIG,
       onLocationerror: () => {
         Swal.fire({
           icon: "error",
@@ -65,6 +87,7 @@ const locatePlace = () => {
       },
     })
     .addTo(map.value);
+
   map.value.on("locationfound", (e) => {
     const { lat, lng } = e.latlng;
     updateDisplayLots(lat, lng);
@@ -116,7 +139,7 @@ const SearchHandler = async (searchQuery) => {
         const lat = parseFloat(data.latitude);
         const lon = parseFloat(data.longitude);
 
-        const marker = L.marker([lat, lon], { icon: locationIcon })
+        const marker = L.marker([lat, lon], { icon: LOCATION_ICON })
           .bindPopup(`位置：${searchQuery}`)
           .openPopup()
           .addTo(map.value);
@@ -220,75 +243,81 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
   return distance;
 };
 
-//停車場加上marker
-const AddMarkerToMap = async () => {
-  isLoading.value = true;
-  // 如果已經存在 markerClusterGroup，先移除
-  if (markerClusterGroup.value) {
-    map.value.removeLayer(markerClusterGroup.value);
-  }
-  // 創建 MarkerClusterGroup
-  //markerClusterGroup.value.clearLayers(); // 清除舊的標記
-  markerClusterGroup.value = L.markerClusterGroup();
-  markerMap.value.clear(); // 每次都清空舊的 markerMap
+// 優化標記添加方法
+const createParkingLotMarker = (lot) => {
+  const iconClass = lot.validSpace > 0 ? "lotsIcon" : "lotsIcon2";
+  const backgroundColor = lot.validSpace > 0 ? "#4caf50" : "#e72e0d";
+  const starDisplay = lot.resDeposit > 0 ? "" : "none";
 
-  // 模擬延遲 2 秒鐘
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  displayedParkingLots.value.forEach((lot) => {
-    const iconClass = lot.validSpace > 0 ? "lotsIcon" : "lotsIcon2"; // 根據可用車位判斷class
-    const backgroundColor = lot.validSpace > 0 ? "#4caf50" : "#e72e0d"; // 綠色表示可用，紅色表示不可用
-    const display = lot.resDeposit > 0 ? "" : "none";
-    const lotsIcon = L.divIcon({
+  return L.marker([lot.latitude, lot.longitude], {
+    icon: L.divIcon({
       className: iconClass,
-      html: `<div class="text-center"><i class="fa-solid fa-star" style="display:${display};color:#FF00FF;font-size:1.5rem;"></i><div style="
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        line-height: 40px;
-        font-size: 14px;
-        text-align: center;
-        color: white;
-        font-weight: bold;
-        border: 2px solid white;
-        background-color: ${backgroundColor};">${lot.validSpace}</div></div>`,
+      html: `
+          <div class="text-center">
+            <i class="fa-solid fa-star" style="display:${starDisplay};color:#FF00FF;font-size:1.5rem;"></i>
+            <div style="
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              line-height: 40px;
+              font-size: 14px;
+              text-align: center;
+              color: white;
+              font-weight: bold;
+              border: 2px solid white;
+              background-color: ${backgroundColor};">
+              ${lot.validSpace}
+            </div>
+          </div>`,
       iconSize: [40, 40],
       iconAnchor: [20, 20],
-    });
-    const existingMarker = markerMap.value.get(lot.lotId);
-    if (!existingMarker) {
-      const marker = L.marker(
-        [lot.latitude, lot.longitude],
-        {
-          icon: lotsIcon,
-        },
-        13
-      );
+    }),
+  });
+};
+
+// 優化標記添加到地圖的方法
+const AddMarkerToMap = async () => {
+  if (!map.value) return;
+
+  isLoading.value = true;
+
+  try {
+    // 清理舊的標記
+    if (markerClusterGroup.value) {
+      map.value.removeLayer(markerClusterGroup.value);
+    }
+    markerClusterGroup.value = L.markerClusterGroup();
+    markerMap.value.clear();
+
+    // 使用 requestAnimationFrame 優化渲染
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    displayedParkingLots.value.forEach((lot) => {
+      const marker = createParkingLotMarker(lot);
+
       marker.on("click", () => {
-        // 滾動到對應的停車場卡片
         const cardElement = document.querySelector(
           `[data-lot-id="${lot.lotId}"]`
         );
         if (cardElement) {
           cardElement.scrollIntoView({ behavior: "smooth", block: "center" });
-
-          // 添加 active-card 樣式，並移除其他卡片的樣式
-          const allCards = document.querySelectorAll(".card");
-          allCards.forEach((card) => card.classList.remove("active-card"));
+          document
+            .querySelectorAll(".card")
+            .forEach((card) => card.classList.remove("active-card"));
           cardElement.classList.add("active-card");
         }
       });
+
       markerClusterGroup.value.addLayer(marker);
-      // 將 marker 存入 markerMap，使用 lotId 進行關聯
       markerMap.value.set(lot.lotId, marker);
-    }
-  });
-  // 將 MarkerClusterGroup 添加到地圖
-  if (map.value) {
+    });
+
     map.value.addLayer(markerClusterGroup.value);
-  } else {
-    console.error("地圖尚未初始化");
+  } catch (error) {
+    console.error("添加標記時發生錯誤：", error);
+  } finally {
+    isLoading.value = false;
   }
-  isLoading.value = false;
 };
 
 // 添加 watch 監聽器
@@ -309,29 +338,45 @@ watch(displayedParkingLots, () => {
   }
 });
 
-// 掛載時檢查有沒有來自首頁的字串
-onMounted(async () => {
-  if (map.value === null) {
-    //初始化地圖
-    map.value = L.map("map", {
-      zoomControl: true,
-      zoom: 1,
-      zoomAnimation: false,
-      fadeAnimation: true,
-      markerZoomAnimation: true,
-    }).setView([22.6273, 120.3014], 15); //高雄經緯度
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+// 優化地圖初始化方法
+const initializeMap = () => {
+  if (map.value) return;
+
+  map.value = L.map("map", MAP_CONFIG.options).setView(
+    MAP_CONFIG.center,
+    MAP_CONFIG.zoom
+  );
+
+  // 添加圖層
+  const mapLayers = {
+    default: L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "EasyPark © OpenStreetMap",
-    }).addTo(map.value);
-    locatePlace();
-    // 初始化 LayerGroup
-    markerGroup.value = L.layerGroup().addTo(map.value); // 停車場標記
-    searchMarkerGroup.value = L.layerGroup().addTo(map.value); // 搜尋標記
-    await loadParkingLots();
-    const destinationFromHome = route.query.searchQuery; //查詢home傳來的參數
-    if (destinationFromHome) {
-      await SearchHandler(destinationFromHome); //自動搜尋跟定位
-    }
+    }),
+    streets: L.tileLayer(
+      "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+      {
+        attribution: "© OpenStreetMap contributors, Tiles style by HOT",
+      }
+    ),
+  };
+
+  mapLayers.default.addTo(map.value);
+
+  // 初始化圖層組
+  markerGroup.value = L.layerGroup().addTo(map.value);
+  searchMarkerGroup.value = L.layerGroup().addTo(map.value);
+  markerClusterGroup.value = L.markerClusterGroup();
+};
+
+// 修改 onMounted
+onMounted(async () => {
+  initializeMap();
+  locatePlace();
+  await loadParkingLots();
+
+  const destinationFromHome = route.query.searchQuery;
+  if (destinationFromHome) {
+    await SearchHandler(destinationFromHome);
   }
 });
 
