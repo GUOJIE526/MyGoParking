@@ -33,10 +33,9 @@ const MAP_CONFIG = {
   options: {
     zoomControl: true,
     zoom: 1,
-    zoomAnimation: true,
+    zoomAnimation: false,
     fadeAnimation: true,
-    markerZoomAnimation: false,
-    scrollWheelZoom: true,
+    markerZoomAnimation: true,
   },
 };
 
