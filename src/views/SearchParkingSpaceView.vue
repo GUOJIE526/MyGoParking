@@ -116,67 +116,84 @@ const isValidSearchQuery = (query) => {
 
 // 搜尋停車場
 const SearchHandler = async (searchQuery) => {
+  if (!searchQuery?.trim()) {
+    await Swal.fire({
+      icon: "error",
+      title: "錯誤",
+      text: "請輸入搜尋內容",
+    });
+    return;
+  }
+
   if (!map.value) {
     console.error("地圖尚未初始化");
     return;
   }
-  try {
-    if (!isValidSearchQuery(searchQuery)) {
-      throw new Error("請輸入正確的目的地!!");
-    }
-    if (searchQuery) {
-      sessionStorage.setItem("searchQuery", searchQuery);
-      const res = await fetch(`${API_URL}${encodeURIComponent(searchQuery)}`);
-      if (!res.ok) {
-        throw new Error("Server無法獲取數據");
-      }
-      if (res.status === 404) {
-        throw new Error("請輸入關鍵字而非地址!!");
-      }
-      const data = await res.json();
-      if (data.latitude && data.longitude) {
-        const lat = parseFloat(data.latitude);
-        const lon = parseFloat(data.longitude);
 
-        const marker = L.marker([lat, lon], { icon: LOCATION_ICON })
-          .bindPopup(`位置：${searchQuery}`)
-          .openPopup()
-          .addTo(map.value);
-        if (!searchMarkerGroup.value) {
-          searchMarkerGroup.value = L.layerGroup().addTo(map.value);
-        }
-        searchMarkerGroup.value.clearLayers();
-        if (userLocationMarker.value) {
-          map.value.removeLayer(userLocationMarker.value);
-          userLocationMarker.value = null;
-        }
-        searchMarkerGroup.value.addLayer(marker);
-        map.value.setView([lat, lon], 15);
-        updateUrlQuery(searchQuery);
-        // 更新顯示的停車場
-        updateDisplayLots(lat, lon);
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "定位錯誤，請聯絡客服人員!",
-        });
-      }
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "數據異常，請聯絡客服人員!",
-      });
+  try {
+    isLoading.value = true; // 添加載入狀態
+
+    if (!isValidSearchQuery(searchQuery)) {
+      throw new Error("請輸入正確的目的地");
     }
+
+    sessionStorage.setItem("searchQuery", searchQuery);
+    const res = await fetch(`${API_URL}${encodeURIComponent(searchQuery)}`);
+
+    if (!res.ok) {
+      throw new Error(
+        res.status === 404 ? "請輸入關鍵字而非地址" : "伺服器無法獲取數據"
+      );
+    }
+
+    const data = await res.json();
+
+    if (!data.latitude || !data.longitude) {
+      throw new Error("定位錯誤，請聯絡客服人員");
+    }
+
+    const lat = parseFloat(data.latitude);
+    const lon = parseFloat(data.longitude);
+
+    // 更新地圖標記
+    await updateMapMarker(lat, lon, searchQuery);
+
+    // 更新 URL 和顯示的停車場
+    updateUrlQuery(searchQuery);
+    updateDisplayLots(lat, lon);
   } catch (error) {
-    Swal.fire({
+    await Swal.fire({
       icon: "error",
-      title: "Oops...",
-      text: `請輸入正確的目的地!!`,
+      title: "搜尋錯誤",
+      text: error.message || "發生未知錯誤",
     });
     router.push({ name: "search" });
+  } finally {
+    isLoading.value = false;
   }
+};
+
+// 將地圖標記更新邏輯抽離成獨立函數
+const updateMapMarker = async (lat, lon, searchQuery) => {
+  // 清理舊的標記
+  if (searchMarkerGroup.value) {
+    searchMarkerGroup.value.clearLayers();
+  } else {
+    searchMarkerGroup.value = L.layerGroup().addTo(map.value);
+  }
+
+  if (userLocationMarker.value) {
+    map.value.removeLayer(userLocationMarker.value);
+    userLocationMarker.value = null;
+  }
+
+  // 添加新標記
+  const marker = L.marker([lat, lon], { icon: LOCATION_ICON })
+    .bindPopup(`位置：${searchQuery}`)
+    .openPopup();
+
+  searchMarkerGroup.value.addLayer(marker);
+  map.value.setView([lat, lon], 15);
 };
 
 // 載入停車場
