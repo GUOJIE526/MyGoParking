@@ -14,15 +14,19 @@ let originalCars = []; //存放原始資料
 const remind = ref("");
 
 const loadLicensePlates = async () => {
-  const response = await fetch(`${API_URL}/Cars_?userId=${userId}`);
-  const datas = await response.json();
-  cars.value = datas.map((item) => ({
-    ...item,
-    editable: false, //載入的車牌不可編輯
-    isNew: false, //標記為舊有資料
-  }));
+  try {
+    const response = await fetch(`${API_URL}/Cars_?userId=${userId}`);
+    const datas = await response.json();
+    cars.value = datas.data.map((item) => ({
+      ...item,
+      editable: false, //載入的車牌不可編輯
+      isNew: false, //標記為舊有資料
+    }));
 
-  originalCars = JSON.parse(JSON.stringify(cars.value)); // copy原始資料
+    originalCars = JSON.parse(JSON.stringify(cars.value)); // copy原始資料
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // 保存原始資料
